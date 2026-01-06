@@ -2,6 +2,7 @@ import { File, type Store, type VitePlugin, addSrcPrefix } from './store'
 import { type Transform, transform } from 'sucrase'
 import postcss from 'postcss'
 import postcssModules from 'postcss-modules'
+import { createFilter } from 'unplugin-utils'
 
 const REGEX_JS = /\.[jt]sx?$/
 const REGEX_VUE = /\.vue$/
@@ -127,7 +128,18 @@ async function transformVitePlugin(
     if (plugin.transformInclude) {
       if (!plugin.transformInclude(id)) continue
     }
-    const result = await plugin.transform?.(code, id)
+    let transform
+    if (typeof plugin.transform === 'function') {
+      transform = plugin.transform
+    } else if (plugin.transform && plugin.transform.filter) {
+      const filterId = plugin.transform.filter.id
+      if (filterId) {
+        let filter = createFilter(filterId.include, filterId.exclude)
+        if (!filter(id)) continue
+      }
+      transform = plugin.transform.handler
+    }
+    const result = await transform?.(code, id)
     if (typeof result === 'string') {
       code = result
     } else if (result) {
@@ -143,9 +155,21 @@ async function transformVitePlugin(
     }
 
     if (plugin.resolveId) {
+      let resolveId
+      let resolveFilter
+      if (typeof plugin.resolveId === 'function') {
+        resolveId = plugin.resolveId
+      } else if (plugin.resolveId && plugin.resolveId.filter) {
+        const filterId = plugin.resolveId.filter.id
+        if (filterId) {
+          resolveFilter = createFilter(filterId.include, filterId.exclude)
+        }
+        resolveId = plugin.resolveId.handler
+      }
       for (const match of code.matchAll(resolveRE)) {
         const [_, id] = match
-        const resolvedId = plugin.resolveId(id)
+        if (!resolveFilter?.(id)) continue
+        const resolvedId = resolveId?.(id)
         if (!resolvedId) continue
 
         function escapeRegExp(str: string) {
@@ -159,7 +183,18 @@ async function transformVitePlugin(
               ? ''
               : './') + resolvedId,
         )
-        let loaded = plugin.load?.(resolvedId)
+        let load
+        if (typeof plugin.load === 'function') {
+          load = plugin.load
+        } else if (plugin.load && plugin.load.filter) {
+          const filterId = plugin.load.filter.id
+          if (filterId) {
+            let filter = createFilter(filterId.include, filterId.exclude)
+            if (!filter(resolvedId)) continue
+          }
+          load = plugin.load.handler
+        }
+        let loaded = load?.(resolvedId)
         if (!loaded) continue
         loaded = await transformVitePlugin(loaded, resolvedId, store)
 

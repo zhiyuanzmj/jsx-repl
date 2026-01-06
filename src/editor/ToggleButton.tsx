@@ -1,6 +1,6 @@
 export default defineVaporComponent(({ text = '' }) => {
   let active = $defineModel<boolean>()
-  
+
   return (
     <div class="wrapper" onClick={() => (active = !active)}>
       <span>{text}</span>

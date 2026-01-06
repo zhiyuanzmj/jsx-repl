@@ -167,20 +167,20 @@ export default defineVaporComponent(
         transform: translateX(-50%);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
       }
-
+      
       .dark .toggler {
         background-color: var(--border);
       }
-
+      
       /* vertical */
       .split-pane.vertical {
         display: block;
       }
-
+      
       .split-pane.vertical.dragging {
         cursor: ns-resize;
       }
-
+      
       .vertical .dragger {
         top: auto;
         height: 10px;
@@ -190,7 +190,7 @@ export default defineVaporComponent(
         bottom: -5px;
         cursor: ns-resize;
       }
-
+      
       .vertical .left,
       .vertical .right {
         width: 100%;
@@ -210,7 +210,7 @@ export default defineVaporComponent(
         .horizontal > .dragger {
           display: none;
         }
-
+      
         .split-pane.horizontal > .toggler {
           display: block;
         }

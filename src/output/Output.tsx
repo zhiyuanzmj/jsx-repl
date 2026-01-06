@@ -269,16 +269,16 @@ export default defineVaporComponent(
         min-height: var(--header-height);
         overflow: hidden;
       }
-
+      
       .tab-buttons button {
         padding: 0;
         box-sizing: border-box;
       }
-
+      
       .tab-buttons .actions button {
         background-color: currentColor;
       }
-
+      
       .tab-buttons span {
         font-size: 13px;
         font-family: var(--font-code);
@@ -288,7 +288,7 @@ export default defineVaporComponent(
         padding: 8px 16px 6px;
         line-height: 20px;
       }
-
+      
       button.active {
         color: var(--color-branding-dark);
         border-bottom: 3px solid var(--color-branding-dark);

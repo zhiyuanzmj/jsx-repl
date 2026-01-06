@@ -140,7 +140,7 @@ defineStyle(`
       Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     background-color: var(--bg-soft);
   }
-
+  
   .dark .vue-repl,
   .v-popper__popper {
     --bg: #1a1a1a;
@@ -151,11 +151,11 @@ defineStyle(`
     --color-branding: #42d392;
     --color-branding-dark: #89ddff;
   }
-
+  
   html.dark {
     color-scheme: dark;
   }
-
+  
   .vue-repl button {
     border: none;
     outline: none;

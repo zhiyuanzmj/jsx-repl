@@ -116,7 +116,7 @@ export default defineVaporComponent(
         overflow: hidden;
         position: relative;
       }
-
+      
       .editor-floating {
         position: absolute;
         bottom: 16px;
@@ -140,7 +140,7 @@ defineStyle(`
     display: inline-block;
     outline: none;
   }
-
+  
   .cursor::after {
     content: "";
     outline: none;
@@ -152,7 +152,7 @@ defineStyle(`
     background: oklch(87.2% 0.01 258.338);
     animation: blink 1s infinite;
   }
-
+  
   @keyframes blink {
     0%,
     100% {

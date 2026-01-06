@@ -441,20 +441,23 @@ export type StoreState = ToRefs<{
   presets: Record<string, Template>
 }>
 
+type ResolveId = (id: string) => string | null | undefined
+type Load = (id: string) => string | null | undefined
+type Transform = (
+  code: string,
+  id: string,
+) =>
+  | string
+  | { code: string; map: SourceMapInput; ast?: string }
+  | null
+  | undefined
 export type VitePlugin = {
   name?: string
   enforce?: 'pre' | 'post'
-  resolveId?: (id: string) => string | null | undefined
-  load?: (id: string) => string | null | undefined
+  resolveId?: ResolveId | { filter: any; handler: ResolveId }
+  load?: Load | { filter: any; handler: Load }
   transformInclude?: (id: string) => boolean
-  transform?: (
-    code: string,
-    id: string,
-  ) =>
-    | string
-    | { code: string; map: SourceMapInput; ast?: string }
-    | null
-    | undefined
+  transform?: Transform | { filter: any; handler: Transform }
 }
 export type ViteConfig = {
   plugins: VitePlugin[]
