@@ -441,7 +441,7 @@ export type StoreState = ToRefs<{
   presets: Record<string, Template>
 }>
 
-type ResolveId = (id: string) => string | null | undefined
+export type ResolveId = (id: string) => string | null | undefined
 type Load = (id: string) => string | null | undefined
 type Transform = (
   code: string,

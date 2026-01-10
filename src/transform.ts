@@ -1,4 +1,10 @@
-import { File, type Store, type VitePlugin, addSrcPrefix } from './store'
+import {
+  File,
+  type ResolveId,
+  type Store,
+  type VitePlugin,
+  addSrcPrefix,
+} from './store'
 import { type Transform, transform } from 'sucrase'
 import postcss from 'postcss'
 import postcssModules from 'postcss-modules'
@@ -125,6 +131,21 @@ async function transformVitePlugin(
   let ast
   const { plugins } = store.viteConfig
   for (const plugin of resolvePlugins(plugins)) {
+    let resolveId: ResolveId
+    let resolveFilter: ReturnType<typeof createFilter>
+    if (typeof plugin.resolveId === 'function') {
+      resolveId = plugin.resolveId
+    } else if (plugin.resolveId && plugin.resolveId.filter) {
+      const filterId = plugin.resolveId.filter.id
+      if (typeof filterId === 'object') {
+        resolveFilter = createFilter(filterId.include, filterId.exclude)
+      } else {
+        resolveFilter = createFilter(filterId)
+      }
+      resolveId = plugin.resolveId.handler
+    }
+    await load()
+
     if (plugin.transformInclude) {
       if (!plugin.transformInclude(id)) continue
     }
@@ -134,7 +155,10 @@ async function transformVitePlugin(
     } else if (plugin.transform && plugin.transform.filter) {
       const filterId = plugin.transform.filter.id
       if (filterId) {
-        let filter = createFilter(filterId.include, filterId.exclude)
+        const filter =
+          typeof filterId === 'object'
+            ? createFilter(filterId.include, filterId.exclude)
+            : createFilter(filterId)
         if (!filter(id)) continue
       }
       transform = plugin.transform.handler
@@ -153,30 +177,33 @@ async function transformVitePlugin(
         }
       }
     }
+    await load()
 
-    if (plugin.resolveId) {
-      let resolveId
-      let resolveFilter
-      if (typeof plugin.resolveId === 'function') {
-        resolveId = plugin.resolveId
-      } else if (plugin.resolveId && plugin.resolveId.filter) {
-        const filterId = plugin.resolveId.filter.id
-        if (filterId) {
-          resolveFilter = createFilter(filterId.include, filterId.exclude)
-        }
-        resolveId = plugin.resolveId.handler
-      }
+    if ((compiledStack.at(-1)?.code || store.activeFile.code) !== code) {
+      compiledStack.push({
+        name: plugin.name || `plugin ${compiledStack.length}`,
+        code,
+        map,
+        enforce: plugin.enforce,
+      })
+    }
+    if (file && ast) {
+      file.compiled.ast = ast
+    }
+
+    async function load() {
+      if (!plugin.resolveId) return
       for (const match of code.matchAll(resolveRE)) {
         const [_, id] = match
         if (!resolveFilter?.(id)) continue
         const resolvedId = resolveId?.(id)
         if (!resolvedId) continue
 
-        function escapeRegExp(str: string) {
-          return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-        }
         code = code.replaceAll(
-          new RegExp(`(?<=['"])` + escapeRegExp(id), 'g'),
+          new RegExp(
+            `(?<=['"])` + id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+            'g',
+          ),
           (resolvedId.startsWith('/')
             ? '.'
             : resolvedId.startsWith('./')
@@ -189,7 +216,10 @@ async function transformVitePlugin(
         } else if (plugin.load && plugin.load.filter) {
           const filterId = plugin.load.filter.id
           if (filterId) {
-            let filter = createFilter(filterId.include, filterId.exclude)
+            const filter =
+              typeof filterId === 'object'
+                ? createFilter(filterId.include, filterId.exclude)
+                : createFilter(filterId)
             if (!filter(resolvedId)) continue
           }
           load = plugin.load.handler
@@ -205,18 +235,6 @@ async function transformVitePlugin(
           await compileFile(store, store.files[fileName])
         }
       }
-    }
-
-    if ((compiledStack.at(-1)?.code || store.activeFile.code) !== code) {
-      compiledStack.push({
-        name: plugin.name || `plugin ${compiledStack.length}`,
-        code,
-        map,
-        enforce: plugin.enforce,
-      })
-    }
-    if (file && ast) {
-      file.compiled.ast = ast
     }
   }
 
