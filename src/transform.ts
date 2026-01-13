@@ -137,7 +137,7 @@ async function transformVitePlugin(
       resolveId = plugin.resolveId
     } else if (plugin.resolveId && plugin.resolveId.filter) {
       const filterId = plugin.resolveId.filter.id
-      if (typeof filterId === 'object') {
+      if (filterId?.include) {
         resolveFilter = createFilter(filterId.include, filterId.exclude)
       } else {
         resolveFilter = createFilter(filterId)
@@ -155,17 +155,16 @@ async function transformVitePlugin(
     } else if (plugin.transform && plugin.transform.filter) {
       const filterId = plugin.transform.filter.id
       if (filterId) {
-        const filter =
-          typeof filterId === 'object'
-            ? createFilter(filterId.include, filterId.exclude)
-            : createFilter(filterId)
+        const filter = filterId?.include
+          ? createFilter(filterId.include, filterId.exclude)
+          : createFilter(filterId)
         if (!filter(id)) continue
       }
       transform = plugin.transform.handler
     }
     const result = await transform?.(code, id)
     if (typeof result === 'string') {
-      code = result
+      code = result || code
     } else if (result) {
       code = result.code || code
       result.map && (map = result.map)
@@ -216,10 +215,9 @@ async function transformVitePlugin(
         } else if (plugin.load && plugin.load.filter) {
           const filterId = plugin.load.filter.id
           if (filterId) {
-            const filter =
-              typeof filterId === 'object'
-                ? createFilter(filterId.include, filterId.exclude)
-                : createFilter(filterId)
+            const filter = filterId?.include
+              ? createFilter(filterId.include, filterId.exclude)
+              : createFilter(filterId)
             if (!filter(resolvedId)) continue
           }
           load = plugin.load.handler
