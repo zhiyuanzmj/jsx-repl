@@ -133,9 +133,7 @@ export async function useStore(
   }
 
   async function setDefaultFile() {
-    loading.value = true
     await setFiles(await getTemplate())
-    loading.value = false
     errors.value = []
   }
   await setDefaultFile()

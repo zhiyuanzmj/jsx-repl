@@ -222,7 +222,7 @@ async function transformVitePlugin(
           }
           load = plugin.load.handler
         }
-        let loaded = load?.(resolvedId)
+        let loaded = await load?.(resolvedId)
         if (!loaded) continue
         loaded = await transformVitePlugin(loaded, resolvedId, store)
 
