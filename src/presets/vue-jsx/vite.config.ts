@@ -1,19 +1,12 @@
-import { transform } from '@babel/standalone'
-import jsx from '@vue/babel-plugin-jsx'
+// @ts-nocheck
+import vueJsxVapor from 'vue-jsx-vapor/raw.js'
 
 export default {
   plugins: [
-    {
-      name: 'vite-plugin-vue-jsx',
-      transform(code, id) {
-        if (id.match(/\.[jt]sx$/))
-          return transform(code, {
-            presets: [['typescript', { allExtensions: true, isTSX: true }]],
-            plugins: [jsx],
-            filename: id,
-            sourceMaps: true,
-          })
-      },
-    },
+    vueJsxVapor({
+      interop: true,
+      macros: true,
+      sourceMap: true,
+    }),
   ],
 }

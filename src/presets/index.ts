@@ -5,6 +5,13 @@ import vueJsxTsmConfigCode from './vue-jsx/ts-macro.config.ts?raw'
 import vueJsxTsconfigCode from './vue-jsx/tsconfig.json?raw'
 import vueJsxImportMap from './vue-jsx/package.json?raw'
 
+import vueJsxBabelHtml from './vue-jsx-babel/index.html?raw'
+import vueJsxBabelAppCode from './vue-jsx-babel/app.tsx?raw'
+import vueJsxBabelViteConfCode from './vue-jsx-babel/vite.config.ts?raw'
+import vueJsxBabelTsmConfigCode from './vue-jsx-babel/ts-macro.config.ts?raw'
+import vueJsxBabelTsconfigCode from './vue-jsx-babel/tsconfig.json?raw'
+import vueJsxBabelImportMap from './vue-jsx-babel/package.json?raw'
+
 import vueJsxVaporHtml from './vue-jsx-vapor/index.html?raw'
 import vueJsxVaporAppCode from './vue-jsx-vapor/app.tsx?raw'
 import vueJsxVaporViteConfCode from './vue-jsx-vapor/vite.config.ts?raw'
@@ -56,6 +63,14 @@ export const defaultPresets = {
     [tsMacroConfigFile]: { code: vueJsxVaporTsmConfigCode },
     [tsconfigFile]: { code: vueJsxVaporTsconfigCode },
     [packageFile]: { code: vueJsxVaporImportMap },
+  },
+  'vue-jsx-babel': {
+    [indexHtmlFile]: { code: vueJsxBabelHtml },
+    [appFile]: { code: vueJsxBabelAppCode },
+    [viteConfigFile]: { code: vueJsxBabelViteConfCode },
+    [tsMacroConfigFile]: { code: vueJsxBabelTsmConfigCode },
+    [tsconfigFile]: { code: vueJsxBabelTsconfigCode },
+    [packageFile]: { code: vueJsxBabelImportMap },
   },
   react: {
     [indexHtmlFile]: { code: reactHtml },
