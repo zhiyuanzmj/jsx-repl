@@ -1,5 +1,4 @@
 import { type Plugin, mergeConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import base from './vite.config'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -26,7 +25,7 @@ const patchCssFiles: Plugin = {
   writeBundle() {
     //  inject css imports to the files
     const outDir = path.resolve('dist')
-    ;['vue-repl', 'monaco-editor'].forEach((file) => {
+    ;['index'].forEach((file) => {
       const filePath = path.resolve(outDir, file + '.js')
       const content = fs.readFileSync(filePath, 'utf-8')
       fs.writeFileSync(filePath, `import './${file}.css'\n${content}`)
@@ -34,14 +33,9 @@ const patchCssFiles: Plugin = {
   },
 }
 delete base.build!.lib
+delete base.build!.outDir
 export default mergeConfig(base, {
-  plugins: [
-    dts({
-      rollupTypes: true,
-    }),
-    genStub,
-    patchCssFiles,
-  ],
+  plugins: [genStub, patchCssFiles],
   optimizeDeps: {
     // avoid late discovered deps
     include: [
@@ -50,15 +44,11 @@ export default mergeConfig(base, {
       'vue/server-renderer',
     ],
   },
-  base: './',
   build: {
     target: 'esnext',
     minify: false,
     lib: {
-      entry: {
-        'vue-repl': './src/index.ts',
-        'monaco-editor': './src/monaco/Monaco.vue',
-      },
+      entry: './src/index.ts',
       formats: ['es'],
       fileName: () => '[name].js',
     },

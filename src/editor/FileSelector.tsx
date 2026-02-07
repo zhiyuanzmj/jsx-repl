@@ -1,7 +1,7 @@
 import type { WheelEvent } from 'vue-jsx-vapor'
 import { injectKeyProps } from '../../src/types'
 import {
-  type File,
+  type ReplFile,
   appFile,
   configFileNames,
   indexHtmlFile,
@@ -11,8 +11,8 @@ import {
 
 export default defineVaporComponent(
   (props: {
-    files: Record<string, File>
-    activeFile: File
+    files: Record<string, ReplFile>
+    activeFile: ReplFile
     disabled?: boolean
   }) => {
     const { store, showVirtualFiles } = $inject(injectKeyProps)!

@@ -1,5 +1,5 @@
 import {
-  File,
+  ReplFile,
   type ResolveId,
   type Store,
   type VitePlugin,
@@ -32,7 +32,7 @@ const resolveRE = /(?:from|import)\s+['"]([^'"]+)['"]/g
 
 export async function compileFile(
   store: Store,
-  file: File,
+  file: ReplFile,
 ): Promise<(string | Error)[]> {
   const { filename, code, compiled } = file
   if (!code.trim()) {
@@ -123,7 +123,7 @@ async function transformVitePlugin(
   code: string,
   id: string,
   store: Store,
-  file?: File,
+  file?: ReplFile,
 ) {
   const compiledStack = file?.compiledStack ?? []
   id = id.startsWith('/') ? id : `/${id}`
@@ -229,7 +229,7 @@ async function transformVitePlugin(
         const fileName = addSrcPrefix(resolvedId)
         if (!store.files[fileName] || store.files[fileName].code !== loaded) {
           file && (file.loadedIds ??= []).push(fileName)
-          store.files[fileName] = new File(fileName, loaded, true)
+          store.files[fileName] = new ReplFile(fileName, loaded, true)
           await compileFile(store, store.files[fileName])
         }
       }

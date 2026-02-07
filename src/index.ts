@@ -1,8 +1,8 @@
-export { default as Repl } from './Repl'
+export { Repl } from './Repl'
 export { default as Preview } from './output/Preview'
 export {
   useStore,
-  File,
+  ReplFile,
   type StoreState,
   type Store,
   type ReplStore,
@@ -11,4 +11,3 @@ export {
 export { compileFile } from './transform'
 export type { Props as ReplProps } from './Repl'
 export type { OutputModes } from './types'
-export { version as languageToolsVersion } from '@ts-macro/language-plugin/package.json'

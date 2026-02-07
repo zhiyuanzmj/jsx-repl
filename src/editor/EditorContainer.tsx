@@ -3,7 +3,7 @@ import Message from '../Message'
 import { debounce, useRouteQuery } from '../utils'
 import ToggleButton from './ToggleButton'
 import { type EditorComponentType, injectKeyProps } from '../types'
-import { type File, configFileNames } from '../store'
+import { type ReplFile, configFileNames } from '../store'
 import SplitPane from '../SplitPane'
 import Monaco from '../monaco/Monaco'
 import { useSourceMap } from './sourceMap'
@@ -26,7 +26,7 @@ export default defineVaporComponent(
     }, 250)
 
     const resolvedFiles = computed(() => {
-      const result = [{}, {}] as Record<string, File>[]
+      const result = [{}, {}] as Record<string, ReplFile>[]
       for (const [name, file] of Object.entries(store.files)) {
         if (configFileNames.includes(name)) {
           result[1][name] = file

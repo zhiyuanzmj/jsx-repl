@@ -5,25 +5,20 @@
   "packageManager": "pnpm@10.15.1",
   "type": "module",
   "main": "dist/ssr-stub.js",
-  "module": "dist/vue-repl.js",
+  "module": "dist/index.js",
   "files": [
     "dist"
   ],
-  "types": "dist/vue-repl.d.ts",
+  "types": "dist/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/vue-repl.d.ts",
-      "import": "./dist/vue-repl.js",
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/index.js",
       "require": "./dist/ssr-stub.js"
     },
-    "./monaco-editor": {
-      "types": "./dist/monaco-editor.d.ts",
-      "import": "./dist/monaco-editor.js",
-      "require": null
-    },
     "./package.json": "./package.json",
-    "./style.css": "./dist/vue-repl.css",
-    "./dist/style.css": "./dist/vue-repl.css"
+    "./style.css": "./dist/index.css",
+    "./dist/style.css": "./dist/index.css"
   },
   "typesVersions": {
     "*": {
@@ -42,7 +37,7 @@
     "server:build": "prisma generate --no-engine && prisma migrate deploy && nitro build",
     "vercel:build": "pnpm server:build && pnpm build",
     "build": "vite build",
-    "build:lib": "vite build -c vite.lib.config.ts",
+    "build:lib": "vite build -c vite.lib.config.ts && tsmc",
     "format": "prettier --write .",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -80,8 +75,8 @@
     "@prisma/extension-accelerate": "^2.0.2",
     "@rollup/plugin-replace": "^6.0.2",
     "@shikijs/monaco": "^3.12.2",
-    "@ts-macro/language-plugin": "^0.3.4",
-    "@ts-macro/tsc": "^0.3.4",
+    "@ts-macro/language-plugin": "^0.3.7",
+    "@ts-macro/tsc": "^0.3.7",
     "@types/node": "^22.18.1",
     "@volar/jsdelivr": "~2.4.23",
     "@volar/monaco": "~2.4.23",
@@ -118,19 +113,13 @@
     "unplugin-auto-import": "^19.3.0",
     "unplugin-utils": "^0.3.1",
     "unplugin-vue-reactivity-function": "^1.2.0",
-    "vite": "8.0.0-beta.5",
-    "vite-plugin-dts": "^4.5.4",
+    "vite": "8.0.0-beta.13",
     "vite-plugin-inspect": "^11.3.3",
     "volar-plugin-ignore-attributes": "^0.2.6",
     "volar-service-typescript": "^0.0.64",
     "vscode-uri": "^3.1.0",
     "vue": "3.6.0-beta.3",
     "vue-jsx-vapor": "^3.1.20"
-  },
-  "pnpm": {
-    "overrides": {
-      "@babel/traverse": "^8.0.0-beta.2"
-    }
   },
   "prisma": {
     "schema": "./server/prisma/schema.prisma"

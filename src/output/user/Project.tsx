@@ -132,89 +132,97 @@ export default defineVaporComponent(() => {
   return (
     <div class="flex items-center gap-2">
       <Menu distance={8}>
-        <button class="i-carbon:add-large bg-$text! text-xl" />
-        <template v-slot:popper>
-          <form
-            v-if={store.user.id}
-            class="px4 py2 text-sm relative"
-            onSubmit_prevent
-          >
-            <div class="text mb1 flex op70">Project Name</div>
-            <div class="flex items-center">
-              {/* TODO can't use v-model */}
-              <input
-                class="outline-none bg-$bg-soft p2 rounded b-0 w-full"
-                value={name}
-                onChange={(e) => (name = e.currentTarget.value)}
-                onKeydown_enter={submit}
-              />
-              <button
-                class="bg-$bg-soft b-0 ml3 cursor-pointer px2.5 py1.3 mr--2 rounded"
-                type="button"
-                onClick={submit}
-              >
-                <div class="i-carbon:add-large bg-$text text-xl" />
-              </button>
-            </div>
+        {{
+          default: () =>
+            (<button class="i-carbon:add-large bg-$text! text-xl" />) as any,
+          popper: () =>
+            (
+              <>
+                <form
+                  v-if={store.user.id}
+                  class="px4 py2 text-sm relative"
+                  onSubmit_prevent
+                >
+                  <div class="text mb1 flex op70">Project Name</div>
+                  <div class="flex items-center">
+                    {/* TODO can't use v-model */}
+                    <input
+                      class="outline-none bg-$bg-soft p2 rounded b-0 w-full"
+                      value={name}
+                      onChange={(e) => (name = e.currentTarget.value)}
+                      onKeydown_enter={submit}
+                    />
+                    <button
+                      class="bg-$bg-soft b-0 ml3 cursor-pointer px2.5 py1.3 mr--2 rounded"
+                      type="button"
+                      onClick={submit}
+                    >
+                      <div class="i-carbon:add-large bg-$text text-xl" />
+                    </button>
+                  </div>
 
-            <div v-if={store.user.id} class="mt2">
-              <div
-                v-for={(project, index) in projects}
-                key={project.id}
-                class="flex items-center p1 op80"
-              >
-                <span class="flex items-center h6 w-46">
-                  <span class="text-center w-4 mr1">{index + 1}.</span>
-                  <input
-                    v-if={project.editing}
-                    v-model={project.name}
-                    class="outline-none bg-$bg-soft p2 rounded b-0"
-                    onKeydown_enter={() => updateProject(project)}
-                  />
-                  <span v-else>{project.name}</span>
-                </span>
+                  <div v-if={store.user.id} class="mt2">
+                    <div
+                      v-for={(project, index) in projects}
+                      key={project.id}
+                      class="flex items-center p1 op80"
+                    >
+                      <span class="flex items-center h6 w-46">
+                        <span class="text-center w-4 mr1">{index + 1}.</span>
+                        <input
+                          v-if={project.editing}
+                          v-model={project.name}
+                          class="outline-none bg-$bg-soft p2 rounded b-0"
+                          onKeydown_enter={() => updateProject(project)}
+                        />
+                        <span v-else>{project.name}</span>
+                      </span>
 
-                <template v-if={project.editing}>
-                  <i
-                    class="ml-auto i-carbon:save cursor-pointer text-lg"
-                    onClick={() => updateProject(project)}
-                  />
-                  <i
-                    class="i-carbon:close-outline cursor-pointer text-lg ml-1 mr--2"
-                    onClick={() => (project.editing = false)}
-                  />
-                </template>
-                <template v-else>
-                  <i
-                    v-if={store.user.role === 'ADMIN'}
-                    class={[
-                      project.public ? 'i-carbon:view' : 'i-carbon:view-off',
-                      'ml-auto cursor-pointer text-lg mr-1.5',
-                    ]}
-                    onClick={() => toggleProjectPublic(project)}
-                  />
-                  <i
-                    class="ml-auto i-carbon:edit cursor-pointer text-lg"
-                    onClick={() => (project.editing = true)}
-                  />
-                  <i
-                    class="i-carbon:trash-can cursor-pointer text-lg ml-1 mr--2"
-                    onClick={() => deleteProject(project)}
-                  />
-                </template>
-              </div>
-            </div>
-            <div
-              v-if={loading}
-              class="h-full absolute bottom-0 top-0 left-0 right-0 bg op50 flex"
-            >
-              <div class="i-carbon:rotate-180 text h-6 w-6 m-auto animate-spin" />
-            </div>
-          </form>
-          <div v-else class="px4 py2 text-sm">
-            Please login first
-          </div>
-        </template>
+                      <template v-if={project.editing}>
+                        <i
+                          class="ml-auto i-carbon:save cursor-pointer text-lg"
+                          onClick={() => updateProject(project)}
+                        />
+                        <i
+                          class="i-carbon:close-outline cursor-pointer text-lg ml-1 mr--2"
+                          onClick={() => (project.editing = false)}
+                        />
+                      </template>
+                      <template v-else>
+                        <i
+                          v-if={store.user.role === 'ADMIN'}
+                          class={[
+                            project.public
+                              ? 'i-carbon:view'
+                              : 'i-carbon:view-off',
+                            'ml-auto cursor-pointer text-lg mr-1.5',
+                          ]}
+                          onClick={() => toggleProjectPublic(project)}
+                        />
+                        <i
+                          class="ml-auto i-carbon:edit cursor-pointer text-lg"
+                          onClick={() => (project.editing = true)}
+                        />
+                        <i
+                          class="i-carbon:trash-can cursor-pointer text-lg ml-1 mr--2"
+                          onClick={() => deleteProject(project)}
+                        />
+                      </template>
+                    </div>
+                  </div>
+                  <div
+                    v-if={loading}
+                    class="h-full absolute bottom-0 top-0 left-0 right-0 bg op50 flex"
+                  >
+                    <div class="i-carbon:rotate-180 text h-6 w-6 m-auto animate-spin" />
+                  </div>
+                </form>
+                <div v-else class="px4 py2 text-sm">
+                  Please login first
+                </div>
+              </>
+            ) as any,
+        }}
       </Menu>
 
       <select

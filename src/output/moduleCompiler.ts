@@ -1,4 +1,4 @@
-import { type File, type Store, indexHtmlFile } from '../store'
+import { type ReplFile, type Store, indexHtmlFile } from '../store'
 import MagicString from 'magic-string'
 import { parse as babelParse } from '@babel/parser'
 import {
@@ -13,7 +13,7 @@ import { addEsmPrefix } from '../utils'
 import { cssRE } from '../transform'
 
 export function compileModulesForPreview(store: Store, isSSR = false) {
-  const seen = new Set<File>()
+  const seen = new Set<ReplFile>()
   const processed: string[] = []
   processFile(store, store.files[indexHtmlFile], processed, seen, isSSR)
 
@@ -42,9 +42,9 @@ const moduleKey = `__module__`
 // similar logic with Vite's SSR transform, except this is targeting the browser
 function processFile(
   store: Store,
-  file: File,
+  file: ReplFile,
   processed: string[],
-  seen: Set<File>,
+  seen: Set<ReplFile>,
   isSSR: boolean,
 ) {
   if (seen.has(file)) {
@@ -87,7 +87,7 @@ function processChildFiles(
   importedFiles: Set<string>,
   hasDynamicImport: boolean,
   processed: string[],
-  seen: Set<File>,
+  seen: Set<ReplFile>,
   isSSR: boolean,
 ) {
   if (hasDynamicImport) {
@@ -323,7 +323,7 @@ function processHtmlFile(
   src: string,
   filename: string,
   processed: string[],
-  seen: Set<File>,
+  seen: Set<ReplFile>,
 ) {
   const deps: string[] = []
   let jsCode = ''

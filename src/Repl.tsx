@@ -1,6 +1,6 @@
 import SplitPane from './SplitPane'
 import Output from './output/Output'
-import type { Store } from './store'
+import { type Store, useStore } from './store'
 import {
   type EditorComponentType,
   injectKeyPreviewRef,
@@ -13,14 +13,16 @@ import { useRouteQuery } from './utils'
 import 'floating-vue/dist/style.css'
 import './dropdown.css'
 import { useFullProps } from 'vue-jsx-vapor'
+import Monaco from './monaco/Monaco'
 
 export interface Props {
   previewTheme?: boolean
-  editor: EditorComponentType
-  store: Store
+  editor?: EditorComponentType
   autoResize?: boolean
+  autoSave?: boolean
   showCompileOutput?: boolean
   clearConsole?: boolean
+  store?: Store
   layout?: 'horizontal' | 'vertical'
   ssr?: boolean
   previewOptions?: {
@@ -47,36 +49,35 @@ export interface Props {
   }
 }
 
-export default defineVaporComponent(
+export const Repl = defineVaporComponent(
   ({
     previewTheme = true,
     autoResize = true,
     showCompileOutput = true,
     clearConsole = false,
     ssr = false,
+    autoSave = false,
     layout = 'horizontal',
     previewOptions = {},
     editorOptions = {},
     splitPaneOptions = {},
+    editor = Monaco,
     ...props
   }: Props) => {
-    const autoSave = useRouteQuery<boolean>('auto-save', false)
+    let store = useStore({ slim: ref(false) }, location.hash)
+
+    const autoSaveRef = useRouteQuery<boolean>('auto-save', autoSave)
     const showVirtualFiles = useRouteQuery<boolean>('virtual-files', false)
     const showSourceMap = useRouteQuery<boolean>('source-map', false)
 
-    if (!props.editor) {
-      throw new Error('The "editor" prop is now required.')
-    }
-
     let outputRef = $useRef()
-
-    props.store.init()
 
     provide(injectKeyProps, {
       ...toRefs(useFullProps()),
-      autoSave,
+      autoSave: autoSaveRef,
       showVirtualFiles,
       showSourceMap,
+      store,
     } as any)
     provide(
       injectKeyPreviewRef,
@@ -93,15 +94,19 @@ export default defineVaporComponent(
     defineExpose({ reload })
 
     return (
-      <div class="vue-repl">
-        <SplitPane layout={layout}>
+      <div class="jsx-repl">
+        <div
+          v-if={store.loading}
+          class="i-carbon:rotate-180 text h-10 w-10 relative top-45% m-auto animate-spin"
+        />
+        <SplitPane v-else layout={layout}>
           <template v-slot:left>
-            <EditorContainer editorComponent={props.editor} />
+            <EditorContainer editorComponent={editor} />
           </template>
           <template v-slot:right>
             <Output
               ref={(e) => (outputRef = e)}
-              editorComponent={props.editor}
+              editorComponent={editor}
               showCompileOutput={showCompileOutput}
               ssr={!!ssr}
             />
@@ -113,7 +118,7 @@ export default defineVaporComponent(
 )
 
 defineStyle(`
-  .vue-repl,
+  .jsx-repl,
   .v-popper__popper {
     --bg: #fff;
     --bg-soft: #f8f8f8;
@@ -125,7 +130,7 @@ defineStyle(`
     --color-branding-dark: #416f9c;
     --header-height: 38px;
   }
-  .vue-repl {
+  .jsx-repl {
     height: 100%;
     margin: 0;
     overflow: hidden;
@@ -136,7 +141,7 @@ defineStyle(`
     background-color: var(--bg-soft);
   }
   
-  .dark .vue-repl,
+  .dark .jsx-repl,
   .v-popper__popper {
     --bg: #1a1a1a;
     --bg-soft: #282828;
@@ -151,7 +156,7 @@ defineStyle(`
     color-scheme: dark;
   }
   
-  .vue-repl button {
+  .jsx-repl button {
     border: none;
     outline: none;
     cursor: pointer;

@@ -33,7 +33,7 @@ export const configFileNames = [
   viteConfigFile,
 ]
 
-export async function useStore(
+export function useStore(
   {
     files = ref(Object.create(null)),
     activeFilename = useRouteQuery('main', appFile),
@@ -54,19 +54,21 @@ export async function useStore(
     slim = ref(false),
   }: Partial<StoreState> = {},
   serializedState?: string,
-): Promise<ReplStore> {
+): ReplStore {
   const user = ref({} as User)
   const organization = ref<Organization>()
   const organizations = ref<Organization[]>([])
-  if (
-    document.cookie.split('; ').some((i) => /^token=\S+/.test(i)) &&
-    !slim.value
-  ) {
-    user.value = await ofetch('/api/user-info').catch(() => ({}))
-    organizations.value = await ofetch(
-      `https://api.github.com/users/${user.value.name}/orgs`,
-    )
-  }
+  onMounted(async () => {
+    if (
+      document.cookie.split('; ').some((i) => /^token=\S+/.test(i)) &&
+      !slim.value
+    ) {
+      user.value = await ofetch('/api/user-info').catch(() => ({}))
+      organizations.value = await ofetch(
+        `https://api.github.com/users/${user.value.name}/orgs`,
+      )
+    }
+  })
   const userName = computed(() => organization.value?.login || user.value.name)
 
   const project = ref<Project>()
@@ -140,7 +142,7 @@ export async function useStore(
     await setFiles(await getTemplate())
     errors.value = []
   }
-  await setDefaultFile()
+  setDefaultFile().then(() => init())
 
   async function init() {
     watch(preset, async () => {
@@ -206,9 +208,9 @@ export async function useStore(
     else activeFilename.value = filename
   }
   const addFile: Store['addFile'] = (fileOrFilename) => {
-    let file: File
+    let file: ReplFile
     if (typeof fileOrFilename === 'string') {
-      file = new File(
+      file = new ReplFile(
         fileOrFilename,
         fileOrFilename.endsWith('.tsx')
           ? `export default () => {
@@ -251,7 +253,7 @@ export async function useStore(
     }
 
     file.filename = newFilename
-    const newFiles: Record<string, File> = {}
+    const newFiles: Record<string, ReplFile> = {}
 
     // Preserve iteration order for files
     for (const [name, file] of Object.entries(files.value)) {
@@ -320,8 +322,8 @@ export async function useStore(
     }
     return exported
   }
-  async function setFiles(newFiles: Record<string, File>) {
-    const result: Record<string, File> = Object.create(null)
+  async function setFiles(newFiles: Record<string, ReplFile>) {
+    const result: Record<string, ReplFile> = Object.create(null)
     for (const [filename, file] of Object.entries(newFiles)) {
       setFile(result, filename, file.code, file.hidden)
     }
@@ -411,16 +413,16 @@ export async function useStore(
 export type ImportMap = Record<string, string>
 
 export type Template = {
-  [indexHtmlFile]: File
-  [appFile]: File
-  [viteConfigFile]: File
-  [tsMacroConfigFile]: File
-  [tsconfigFile]: File
-  [packageFile]: File
+  [indexHtmlFile]: ReplFile
+  [appFile]: ReplFile
+  [viteConfigFile]: ReplFile
+  [tsMacroConfigFile]: ReplFile
+  [tsconfigFile]: ReplFile
+  [packageFile]: ReplFile
 }
 
 export type StoreState = ToRefs<{
-  files: Record<string, File>
+  files: Record<string, ReplFile>
   fileCaches: Record<string, string>
   activeFilename: string
   activeConfigFilename: string
@@ -475,19 +477,19 @@ export interface ReplStore extends UnwrapRef<StoreState> {
   userName: string
   user: User
   project?: Project
-  activeFile: File
-  activeConfigFile: File
+  activeFile: ReplFile
+  activeConfigFile: ReplFile
   viteConfig: ViteConfig
   init(): Promise<void>
   setActive(filename: string): void
-  addFile(filename: string | File): void
+  addFile(filename: string | ReplFile): void
   deleteFile(filename: string): void
   renameFile(oldFilename: string, newFilename: string): void
   getTsConfig(): Record<string, any>
   getTsMacroConfig(): Promise<string>
   serialize(): string
   getFiles(): Record<string, { code: string; hidden?: boolean }>
-  setFiles(newFiles: Record<string, File>): Promise<void>
+  setFiles(newFiles: Record<string, ReplFile>): Promise<void>
   updateProject(): void
 }
 
@@ -536,7 +538,7 @@ export type CompiledStack = {
   enforce?: 'pre' | 'post'
 }
 
-export class File {
+export class ReplFile {
   compiled = {
     js: '',
     css: '',
@@ -617,11 +619,11 @@ export function stripSrcPrefix(file: string) {
 }
 
 function setFile(
-  files: Record<string, File>,
+  files: Record<string, ReplFile>,
   filename: string,
   content: string,
   hidden = false,
 ) {
   const normalized = addSrcPrefix(filename)
-  files[normalized] = new File(normalized, content, hidden)
+  files[normalized] = new ReplFile(normalized, content, hidden)
 }

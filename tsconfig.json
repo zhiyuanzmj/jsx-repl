@@ -17,7 +17,9 @@
     "lib": ["esnext", "dom"],
     "jsx": "preserve",
     "rootDir": ".",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
   },
   "include": ["src", "test", "vite.config.lib.ts", "./auto-imports.d.ts"],
   "exclude": ["src/presets"]

@@ -1,10 +1,8 @@
 # jsx-repl
 
-JSX REPL, support Vite plugins and Volar plugins.
+Supports Vite plugins and Volar plugins.
 
-## Basic Usage
-
-**Note: `jsx-repl` supports Monaco Editor, but also requires explicitly passing in the editor to be used for tree-shaking.**
+## Setup
 
 ```ts
 // vite.config.ts
@@ -17,17 +15,11 @@ export default defineConfig({
 })
 ```
 
-### With Monaco Editor
+## Usage
 
-With Volar support, autocomplete, type inference, and semantic highlighting. Heavier bundle, loads dts files from CDN, better for standalone use cases.
-
-```vue
-<script setup>
+```jsx
+// src/App.jsx
 import { Repl } from 'jsx-repl'
-import Monaco from 'jsx-repl/monaco-editor'
-</script>
 
-<template>
-  <Repl :editor="Monaco" />
-</template>
+export default () => <Repl />
 ```
