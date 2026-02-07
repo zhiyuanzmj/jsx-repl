@@ -22,7 +22,6 @@ export interface Props {
   showCompileOutput?: boolean
   clearConsole?: boolean
   layout?: 'horizontal' | 'vertical'
-  layoutReverse?: boolean
   ssr?: boolean
   previewOptions?: {
     headHTML?: string
@@ -50,11 +49,10 @@ export interface Props {
 
 export default defineVaporComponent(
   ({
-    previewTheme = false,
+    previewTheme = true,
     autoResize = true,
     showCompileOutput = true,
     clearConsole = false,
-    layoutReverse = false,
     ssr = false,
     layout = 'horizontal',
     previewOptions = {},
@@ -73,9 +71,6 @@ export default defineVaporComponent(
     let outputRef = $useRef()
 
     props.store.init()
-
-    const editorSlotName = $computed(() => (layoutReverse ? 'right' : 'left'))
-    const outputSlotName = $computed(() => (layoutReverse ? 'left' : 'right'))
 
     provide(injectKeyProps, {
       ...toRefs(useFullProps()),
@@ -100,10 +95,10 @@ export default defineVaporComponent(
     return (
       <div class="vue-repl">
         <SplitPane layout={layout}>
-          <template v-slot:$editorSlotName$>
+          <template v-slot:left>
             <EditorContainer editorComponent={props.editor} />
           </template>
-          <template v-slot:$outputSlotName$>
+          <template v-slot:right>
             <Output
               ref={(e) => (outputRef = e)}
               editorComponent={props.editor}

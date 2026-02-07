@@ -1,3 +1,4 @@
+import { VaporTransition } from 'vue'
 import type { CompilerError } from 'vue/compiler-sfc'
 
 export default defineVaporComponent(
@@ -26,17 +27,17 @@ export default defineVaporComponent(
     }
 
     return (
-      // <Transition name="fade">
-      <div
-        v-if={!dismissed && (err || warn)}
-        class={['msg', err ? 'err' : 'warn']}
-      >
-        <pre>{formatMessage(err || warn!)}</pre>
-        <button class="dismiss" onClick={() => (dismissed = true)}>
-          ✕
-        </button>
-      </div>
-      // </Transition>
+      <VaporTransition name="fade">
+        <div
+          v-if={!dismissed && (err || warn)}
+          class={['msg', err ? 'err' : 'warn']}
+        >
+          <pre>{formatMessage(err || warn!)}</pre>
+          <button class="dismiss" onClick={() => (dismissed = true)}>
+            ✕
+          </button>
+        </div>
+      </VaporTransition>
     )
 
     defineStyle(`

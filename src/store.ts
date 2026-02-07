@@ -51,13 +51,17 @@ export async function useStore(
 
     preset = useRoutePath<string>('vue-jsx'),
     presets = ref(defaultPresets as any),
+    slim = ref(false),
   }: Partial<StoreState> = {},
   serializedState?: string,
 ): Promise<ReplStore> {
   const user = ref({} as User)
   const organization = ref<Organization>()
   const organizations = ref<Organization[]>([])
-  if (document.cookie.split('; ').some((i) => /^token=\S+/.test(i))) {
+  if (
+    document.cookie.split('; ').some((i) => /^token=\S+/.test(i)) &&
+    !slim.value
+  ) {
     user.value = await ofetch('/api/user-info').catch(() => ({}))
     organizations.value = await ofetch(
       `https://api.github.com/users/${user.value.name}/orgs`,
@@ -373,6 +377,7 @@ export async function useStore(
     importMap,
     user,
     project,
+    slim,
 
     errors,
     showOutput,
@@ -437,6 +442,7 @@ export type StoreState = ToRefs<{
 
   preset: string
   presets: Record<string, Template>
+  slim: boolean
 }>
 
 export type ResolveId = (id: string) => string | null | undefined
@@ -520,6 +526,7 @@ export type Store = Pick<
   | 'importMap'
   | 'theme'
   | 'loading'
+  | 'slim'
 >
 
 export type CompiledStack = {

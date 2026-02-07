@@ -1,10 +1,17 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import vueJsxVapor from '@vue-jsx-vapor/eslint'
-import reactivityFunction from 'unplugin-vue-reactivity-function/eslint'
+// import reactivityFunction from 'unplugin-vue-reactivity-function/eslint'
 
 export default tseslint.config(
-  { ignores: ['**/node_modules', '**/dist'] },
+  {
+    ignores: [
+      '**/node_modules',
+      './.vercel',
+      './dist',
+      '**/language-configs.ts',
+    ],
+  },
   eslint.configs.recommended,
   tseslint.configs.base,
   {

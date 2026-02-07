@@ -1,25 +1,30 @@
 import { injectKeyPreviewRef, injectKeyProps } from './types'
+import type { Props } from './Repl'
 
 export default defineVaporComponent(
-  (props: { layout?: 'horizontal' | 'vertical' }) => {
+  (props: { layout?: Props['layout']; inline?: boolean }) => {
     const isVertical = $computed(() => props.layout === 'vertical')
 
     let containerRef = $useRef()
     const previewRef = $inject(injectKeyPreviewRef)!
 
     // mobile only
-    const { store, splitPaneOptions } = $inject(injectKeyProps)!
+    const { store, splitPaneOptions, layout } = $inject(injectKeyProps)!
 
+    let getOffset = () =>
+      ((37.5 * (layout === 'vertical' ? 2 : 1)) / window.innerHeight) * 100
     const state = reactive({
       dragging: false,
-      split: 50,
+      split: props.inline && store.slim ? 100 - getOffset() : 50,
       viewHeight: 0,
       viewWidth: 0,
     })
 
     const boundSplit = $computed(() => {
       const { split } = state
-      return split < 5 ? 5 : split > 95 ? 95 : split
+      const offset = getOffset()
+      let rightOffset = 100 - offset
+      return split < offset ? offset : split > rightOffset ? rightOffset : split
     })
 
     let startPosition = 0

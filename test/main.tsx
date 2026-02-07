@@ -10,12 +10,10 @@ window.process = { env: {}, cwd: () => '/' }
 const App = defineVaporComponent(() => {
   let loading = $ref(true)
   let store!: any
-  useStore({}, location.hash).then((result) => {
+  useStore({ slim: ref(false) }, location.hash).then((result) => {
     store = window.store = result
     loading = false
   })
-
-  const previewTheme = $ref(false)
 
   return (
     <>
@@ -34,7 +32,6 @@ const App = defineVaporComponent(() => {
             // wordWrap: 'on',
           },
         }}
-        previewTheme={previewTheme}
         store={store}
       />
     </>

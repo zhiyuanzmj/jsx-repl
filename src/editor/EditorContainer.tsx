@@ -50,9 +50,8 @@ export default defineVaporComponent(
     })
 
     return (
-      <div class="h-full">
-        {/** TODO: use div instead of fragment to prevent HRM error */}
-        <SplitPane layout="vertical">
+      <>
+        <SplitPane inline={true} layout="vertical">
           <template v-slot:left>
             <div class="editor-container">
               <FileSelector
@@ -101,13 +100,13 @@ export default defineVaporComponent(
             v-model={showVirtualFiles}
             text={editorOptions?.virtualFilesText || 'Virtual Files'}
           />
-          <ToggleButton
+          {/*<ToggleButton
             v-if={editorOptions?.showErrorText !== false}
             v-model={showMessage}
             text={editorOptions?.showErrorText || 'Show Error'}
-          />
+          />*/}
         </div>
-      </div>
+      </>
     )
 
     defineStyle(`
@@ -119,7 +118,7 @@ export default defineVaporComponent(
       
       .editor-floating {
         position: absolute;
-        bottom: 16px;
+        bottom: 38px;
         right: 16px;
         z-index: 11;
         display: flex;

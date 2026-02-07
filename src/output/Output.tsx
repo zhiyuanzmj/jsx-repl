@@ -89,7 +89,7 @@ export default defineVaporComponent(
     showCompileOutput?: boolean
     ssr: boolean
   }) => {
-    const { store } = $inject(injectKeyProps)!
+    const { store, slim } = $inject(injectKeyProps)!
     const { activeFile } = $(store)
     let previewRef = $useRef()
     const modes = $computed(() =>
@@ -144,7 +144,7 @@ export default defineVaporComponent(
     let devtoolsLoaded = $ref(mode === 'devtools')
 
     return (
-      <SplitPane layout="vertical">
+      <SplitPane inline={true} layout="vertical">
         <template v-slot:left>
           <div class="flex-1 h-full">
             <div class="tab-buttons">
@@ -153,7 +153,7 @@ export default defineVaporComponent(
               </button>
 
               <div class="actions ml-auto flex items-center gap-2 pr-2">
-                <Project />
+                <Project v-if={!slim} />
 
                 <button class="text-xl ml-1! i-carbon:renew" onClick={reload} />
 
@@ -170,7 +170,7 @@ export default defineVaporComponent(
                   onClick={jumpToGithub}
                 />
 
-                <Login />
+                <Login v-if={!slim} />
               </div>
             </div>
             <Preview

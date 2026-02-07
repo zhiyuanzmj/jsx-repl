@@ -148,7 +148,9 @@ export const useSourceMap = () => {
       await new Promise((resolve) => setTimeout(resolve, 16))
       try {
         sourceMapDecorations.forEach((i) => i.clear())
-      } catch {}
+      } catch (e) {
+        console.error(e)
+      }
       if (!showSourceMap || !map || !['js', 'ts'].includes(outputMode)) return
       const maps = getMapping()
       if (!maps.length) return
