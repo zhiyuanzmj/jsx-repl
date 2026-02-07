@@ -1,4 +1,8 @@
-## 0.0.2 (2026-02-07)
+## [0.0.3](https://github.com/vuejs/repl/compare/v0.0.2...v0.0.3) (2026-02-07)
+
+
+
+## [0.0.2](https://github.com/vuejs/repl/compare/f8bb46f969860539e3105ff56d092f0184a70eba...v0.0.2) (2026-02-07)
 
 
 ### Bug Fixes
