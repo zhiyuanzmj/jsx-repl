@@ -57,7 +57,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuejs/repl.git"
+    "url": "git+https://github.com/zhiyuanzmj/jsx-repl.git"
   },
   "author": "Evan You",
   "license": "MIT",
