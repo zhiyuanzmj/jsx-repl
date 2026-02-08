@@ -1,3 +1,19 @@
+## [0.0.5](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.4...v0.0.5) (2026-02-08)
+
+
+### Bug Fixes
+
+* debounce compiler ([3c8027d](https://github.com/zhiyuanzmj/jsx-repl/commit/3c8027d91fe37cef8609306b840c6bcb8b417cc8))
+* import uno.css ([9be3785](https://github.com/zhiyuanzmj/jsx-repl/commit/9be3785d38079239ec3bc706329ac11fd2eedd25))
+* trim './' prefix from module ids before resolve ([85697d9](https://github.com/zhiyuanzmj/jsx-repl/commit/85697d9aff8d347e4751a12e72f46431be7257c3))
+
+
+### Features
+
+* support download ([4363719](https://github.com/zhiyuanzmj/jsx-repl/commit/4363719f5d3b4151d9886b3739180c2e10a14a94))
+
+
+
 ## [0.0.4](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.3...v0.0.4) (2026-02-07)
 
 
