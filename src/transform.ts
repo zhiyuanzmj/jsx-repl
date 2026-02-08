@@ -193,7 +193,8 @@ async function transformVitePlugin(
     async function load() {
       if (!plugin.resolveId) return
       for (const match of code.matchAll(resolveRE)) {
-        const [_, id] = match
+        let [_, id] = match
+        if (id.startsWith('./')) id = id.slice(1)
         if (!resolveFilter?.(id)) continue
         const resolvedId = resolveId?.(id)
         if (!resolvedId) continue
