@@ -92,12 +92,14 @@
     "fflate": "^0.8.2",
     "floating-vue": "^5.2.2",
     "globby": "^14.1.0",
+    "jszip": "^3.10.1",
     "lint-staged": "^16.1.6",
     "magic-string": "^0.30.18",
     "monaco-editor-core": "^0.52.2",
     "nitropack": "^2.12.5",
     "ofetch": "^1.4.1",
     "path-browserify": "^1.0.1",
+    "perfect-debounce": "^2.1.0",
     "postcss": "^8.5.6",
     "postcss-modules": "^6.0.1",
     "prettier": "^3.6.2",
@@ -120,7 +122,6 @@
     "volar-service-typescript": "^0.0.64",
     "vscode-uri": "^3.1.0",
     "vue": "3.6.0-beta.3",
-    "jszip": "^3.10.1",
     "vue-jsx-vapor": "^3.1.20"
   },
   "prisma": {
