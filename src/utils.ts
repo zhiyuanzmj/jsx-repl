@@ -67,12 +67,12 @@ export function useRouteQuery<T extends string | boolean>(
   }) as unknown as Ref<T>
 }
 
-export function useRoutePath<T extends string | boolean>(
+export function useRoutePath<T extends string>(
   defaultValue?: T,
   reload = false,
 ) {
   const data = location.pathname.slice(1)
-  const value = ref(data || defaultValue)
+  const value = ref(location.hash || data || defaultValue)
   return computed({
     get() {
       return value.value
@@ -117,4 +117,48 @@ export function addEsmPrefix(code: string, importMap: ImportMap) {
     }
   }
   return s.toString()
+}
+
+export function useDark(defaultTheme?: 'dark' | 'light') {
+  const theme = ref<'dark' | 'light'>(defaultTheme as any)
+  const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)')
+  if (!theme.value) {
+    theme.value = darkThemeMq.matches ? 'dark' : 'light'
+  }
+  darkThemeMq.addEventListener('change', (e) => {
+    theme.value = e.matches ? 'dark' : 'light'
+  })
+  if (typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'class'
+        ) {
+          const isDark = document.documentElement.classList.contains('dark')
+          if (isDark && theme.value !== 'dark') {
+            theme.value = 'dark'
+          } else if (!isDark && theme.value !== 'light') {
+            theme.value = 'light'
+          }
+        }
+      })
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+  }
+  watch(
+    theme,
+    (v) => {
+      if (v === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    },
+    { immediate: true },
+  )
+  return theme
 }

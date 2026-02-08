@@ -89,7 +89,7 @@ export default defineVaporComponent(
     showCompileOutput?: boolean
     ssr: boolean
   }) => {
-    const { store, slim } = $inject(injectKeyProps)!
+    const { store, slim, layout } = $inject(injectKeyProps)!
     const { activeFile } = $(store)
     let previewRef = $useRef()
     const modes = $computed(() =>
@@ -137,7 +137,6 @@ export default defineVaporComponent(
     defineExpose$({ reload, previewRef })
 
     const toggleDark = () => {
-      document.documentElement.classList.toggle('dark')
       store.theme = store.theme === 'dark' ? 'light' : 'dark'
     }
 
@@ -147,7 +146,9 @@ export default defineVaporComponent(
       <SplitPane inline={true} layout="vertical">
         <template v-slot:left>
           <div class="flex-1 h-full">
-            <div class="tab-buttons">
+            <div
+              class={['tab-buttons', layout === 'horizontal' && 'border-t-0!']}
+            >
               <button class="active">
                 <span>preview</span>
               </button>
@@ -158,6 +159,7 @@ export default defineVaporComponent(
                 <button class="text-xl ml-1! i-carbon:renew" onClick={reload} />
 
                 <button
+                  v-if={!store.slim}
                   class={[
                     'text-xl',
                     store.theme === 'dark' ? 'i-carbon:moon' : 'i-carbon:light',
@@ -166,6 +168,7 @@ export default defineVaporComponent(
                 />
 
                 <button
+                  v-if={!store.slim}
                   class="i-carbon:logo-github text-2xl"
                   onClick={jumpToGithub}
                 />
@@ -257,7 +260,7 @@ export default defineVaporComponent(
           </div>
         </template>
       </SplitPane>
-    )
+    ) as JSX.Element
 
     defineStyle(`
       .tab-buttons {

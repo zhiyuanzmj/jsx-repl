@@ -1,6 +1,6 @@
 import type { ToRefs, UnwrapRef } from 'vue'
 import { compileFile, cssRE, transformTS } from './transform'
-import { addEsmPrefix, atou, useRoutePath, useRouteQuery, utoa } from './utils'
+import { addEsmPrefix, atou, useDark, useRouteQuery, utoa } from './utils'
 import type { Organization, OutputModes, Project, User } from './types'
 import type { editor } from 'monaco-editor-core'
 
@@ -33,28 +33,25 @@ export const configFileNames = [
   viteConfigFile,
 ]
 
-export function useStore(
-  {
-    files = ref(Object.create(null)),
-    activeFilename = useRouteQuery('main', appFile),
-    activeConfigFilename = useRouteQuery('config', viteConfigFile),
+export function useStore({
+  files = ref(Object.create(null)),
+  activeFilename = useRouteQuery('main', appFile),
+  activeConfigFilename = useRouteQuery('config', viteConfigFile),
 
-    errors = ref([]),
-    showOutput = useRouteQuery('show-output', false),
-    outputMode = useRouteQuery('output', 'js'),
-    theme = ref('dark'),
-    loading = ref(true),
+  errors = ref([]),
+  showOutput = useRouteQuery('show-output', false),
+  outputMode = useRouteQuery('output', 'js'),
+  theme = useDark(),
+  loading = ref(true),
 
-    locale = ref(),
-    typescriptVersion = ref('latest'),
-    reloadLanguageTools = ref(),
+  locale = ref(),
+  typescriptVersion = ref('latest'),
+  reloadLanguageTools = ref(),
 
-    preset = useRoutePath<string>('vue-jsx'),
-    presets = ref(defaultPresets as any),
-    slim = ref(false),
-  }: Partial<StoreState> = {},
-  serializedState?: string,
-): ReplStore {
+  preset = ref('vue-jsx'),
+  presets = ref(defaultPresets as any),
+  slim = ref(false),
+}: Partial<StoreState> = {}): ReplStore {
   const user = ref({} as User)
   const organization = ref<Organization>()
   const organizations = ref<Organization[]>([])
@@ -73,8 +70,8 @@ export function useStore(
 
   const project = ref<Project>()
   async function getTemplate() {
-    if (serializedState) {
-      return resolveHash(serializedState)
+    if (preset.value.startsWith('#')) {
+      return resolveHash(location.hash)
     } else if (presets.value[preset.value]) {
       project.value = undefined
       return presets.value[preset.value]

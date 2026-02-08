@@ -33,6 +33,8 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:lib": "vite build -c vite.lib.config.ts --watch",
+    "play": "pnpm run -C ./playground dev",
     "server:dev": "nitro dev",
     "server:build": "prisma generate --no-engine && prisma migrate deploy && nitro build",
     "vercel:build": "pnpm server:build && pnpm build",

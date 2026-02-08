@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "catalog:",
+    "vue": "catalog:",
+    "jsx-repl": "workspace:*"
+  }
+}

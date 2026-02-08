@@ -24,7 +24,6 @@ export default defineConfig({
       ref: {
         alias: ['useRef', '$useRef'],
       },
-      interop: true,
     }),
     inspect(),
     AutoImport({

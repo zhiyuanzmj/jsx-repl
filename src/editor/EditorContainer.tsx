@@ -56,6 +56,7 @@ export default defineVaporComponent(
             <div class="editor-container">
               <FileSelector
                 activeFile={activeFile}
+                border-t-0="!"
                 files={resolvedFiles.value[0]}
               />
               <Monaco
@@ -89,7 +90,7 @@ export default defineVaporComponent(
           </template>
         </SplitPane>
         <Message err={store.errors[0]} v-show={showMessage} />
-        <div class="editor-floating">
+        <div v-if={!store.slim} class="editor-floating">
           <ToggleButton
             v-if={editorOptions?.sourceMapText !== false}
             v-model={showSourceMap}

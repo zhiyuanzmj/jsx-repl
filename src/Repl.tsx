@@ -8,7 +8,7 @@ import {
 } from './types'
 import EditorContainer from './editor/EditorContainer'
 import type * as monaco from 'monaco-editor-core'
-import { useRouteQuery } from './utils'
+import { useDark, useRouteQuery } from './utils'
 
 import 'floating-vue/dist/style.css'
 import './dropdown.css'
@@ -24,7 +24,9 @@ export interface Props {
   clearConsole?: boolean
   store?: Store
   layout?: 'horizontal' | 'vertical'
+  slim?: boolean
   ssr?: boolean
+  theme?: 'dark' | 'light'
   previewOptions?: {
     headHTML?: string
     bodyHTML?: string
@@ -51,7 +53,7 @@ export interface Props {
 
 export const Repl = defineVaporComponent(
   ({
-    previewTheme = true,
+    previewTheme = false,
     autoResize = true,
     showCompileOutput = true,
     clearConsole = false,
@@ -62,9 +64,11 @@ export const Repl = defineVaporComponent(
     editorOptions = {},
     splitPaneOptions = {},
     editor = Monaco,
-    ...props
+    slim = false,
+    theme,
   }: Props) => {
-    let store = useStore({ slim: ref(false) }, location.hash)
+    const preset = defineModel<string>({ default: 'vue-jsx' })!
+    let store = useStore({ slim: ref(slim), preset, theme: useDark(theme) })
 
     const autoSaveRef = useRouteQuery<boolean>('auto-save', autoSave)
     const showVirtualFiles = useRouteQuery<boolean>('virtual-files', false)

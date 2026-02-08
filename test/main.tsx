@@ -1,13 +1,14 @@
 import { createVaporApp, vaporInteropPlugin } from 'vue'
 import { Repl } from '../src'
 
-import 'uno.css'
+import { useRoutePath } from '../src/utils'
 
 const window = globalThis.window as any
 window.process = { env: {}, cwd: () => '/' }
 
 const App = defineVaporComponent(() => {
-  return <Repl />
+  const src = $useRoutePath()
+  return <Repl v-model={src} />
 })
 
 const app = createVaporApp(App)
