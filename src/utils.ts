@@ -19,6 +19,10 @@ export function utoa(data: string): string {
   return btoa(binary)
 }
 
+export function serialize(files: Record<string, string>): string {
+  return '#' + utoa(JSON.stringify(files))
+}
+
 export function atou(base64: string): string {
   const binary = atob(base64)
 

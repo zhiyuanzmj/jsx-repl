@@ -1,8 +1,9 @@
 import { type ReplFile, type Store, indexHtmlFile } from '../store'
 import MagicString from 'magic-string'
-import { parse as babelParse } from '@babel/parser'
 import {
+  babelParse,
   extractIdentifiers,
+  getLang,
   isInDestructureAssignment,
   isStaticProperty,
   walkAST,
@@ -108,10 +109,10 @@ function processModule(store: Store, src: string, filename: string) {
   src = addEsmPrefix(src, store.importMap)
   const s = new MagicString(src)
 
-  const ast = babelParse(src, {
+  const ast = babelParse(src, getLang(filename), {
     sourceFilename: filename,
     sourceType: 'module',
-  }).program
+  })
 
   const idToImportMap = new Map<string, string>()
   const declaredConst = new Set<string>()

@@ -12,3 +12,4 @@ export {
 export { compileFile } from './transform'
 export type { Props as ReplProps } from './Repl'
 export type { OutputModes } from './types'
+export { serialize } from './utils'

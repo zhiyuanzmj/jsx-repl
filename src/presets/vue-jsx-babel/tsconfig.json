@@ -9,6 +9,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "emitDeclarationOnly": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   }
 }

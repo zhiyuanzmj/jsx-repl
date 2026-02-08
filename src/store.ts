@@ -71,7 +71,7 @@ export function useStore({
   const project = ref<Project>()
   async function getTemplate() {
     if (preset.value.startsWith('#')) {
-      return resolveHash(location.hash)
+      return resolveHash(preset.value)
     } else if (presets.value[preset.value]) {
       project.value = undefined
       return presets.value[preset.value]
@@ -311,18 +311,18 @@ export function useStore({
     return saved
   }
   function getFiles() {
-    const exported: Record<string, { code: string; hidden?: boolean }> = {}
+    const exported: Record<string, string> = {}
     for (const [filename, file] of Object.entries(files.value)) {
       if (!file.hidden) {
-        exported[filename] = { code: file.code, hidden: file.hidden }
+        exported[filename] = file.code
       }
     }
     return exported
   }
-  async function setFiles(newFiles: Record<string, ReplFile>) {
+  async function setFiles(newFiles: Record<string, string | ReplFile>) {
     const result: Record<string, ReplFile> = Object.create(null)
     for (const [filename, file] of Object.entries(newFiles)) {
-      setFile(result, filename, file.code, file.hidden)
+      setFile(result, filename, typeof file === 'string' ? file : file.code)
     }
     files.value = result
     await getViteConfig()
@@ -356,7 +356,7 @@ export function useStore({
           },
         )
       }
-    } else {
+    } else if (!slim.value) {
       history.replaceState({}, '', store.serialize())
     }
   }
@@ -485,8 +485,8 @@ export interface ReplStore extends UnwrapRef<StoreState> {
   getTsConfig(): Record<string, any>
   getTsMacroConfig(): Promise<string>
   serialize(): string
-  getFiles(): Record<string, { code: string; hidden?: boolean }>
-  setFiles(newFiles: Record<string, ReplFile>): Promise<void>
+  getFiles(): Record<string, string>
+  setFiles(newFiles: Record<string, string>): Promise<void>
   updateProject(): void
 }
 

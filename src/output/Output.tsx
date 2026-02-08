@@ -12,6 +12,7 @@ import { useRef } from 'vue-jsx-vapor'
 import { useDiff } from './diff'
 import type { CompiledStack } from '../store'
 import SourceMap from './SourceMap'
+import { downloadProject } from './download'
 
 const CompiledSelect = defineVaporComponent(() => {
   const { store } = $inject(injectKeyProps)!
@@ -165,6 +166,11 @@ export default defineVaporComponent(
                     store.theme === 'dark' ? 'i-carbon:moon' : 'i-carbon:light',
                   ]}
                   onClick={toggleDark}
+                />
+
+                <button
+                  class="i-carbon:download text-xl"
+                  onClick={() => downloadProject(store)}
                 />
 
                 <button
