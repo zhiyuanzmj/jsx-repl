@@ -1,3 +1,12 @@
+## [0.0.6](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.5...v0.0.6) (2026-02-09)
+
+
+### Bug Fixes
+
+* reload preview on first runtime error ([e603790](https://github.com/zhiyuanzmj/jsx-repl/commit/e603790fbe0108a8d4bc3630397b4eb0129bf10d))
+
+
+
 ## [0.0.5](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.4...v0.0.5) (2026-02-08)
 
 
