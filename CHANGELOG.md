@@ -1,3 +1,7 @@
+## [0.0.7](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.6...v0.0.7) (2026-02-09)
+
+
+
 ## [0.0.6](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.5...v0.0.6) (2026-02-09)
 
 
