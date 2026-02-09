@@ -36,7 +36,6 @@ export interface Props {
       useCode?: string
     }
     showRuntimeError?: boolean
-    showRuntimeWarning?: boolean
   }
   editorOptions?: {
     showErrorText?: string | false

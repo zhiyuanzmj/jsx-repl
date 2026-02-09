@@ -216,6 +216,16 @@ export default defineVaporComponent(({ ssr = false }) => {
     sandbox.contentWindow?.location.reload()
   }
 
+  watch(
+    () => runtimeError,
+    () => {
+      if (runtimeError) {
+        reload()
+      }
+    },
+    { once: true },
+  )
+
   defineExpose$({ reload, container: containerRef })
 
   return (
@@ -226,10 +236,6 @@ export default defineVaporComponent(({ ssr = false }) => {
       />
       <Message
         err={(previewOptions?.showRuntimeError ?? true) && runtimeError}
-      />
-      <Message
-        v-if={!runtimeError && (previewOptions?.showRuntimeWarning ?? true)}
-        warn={runtimeWarning}
       />
     </>
   )
