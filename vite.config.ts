@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import replace from '@rollup/plugin-replace'
-import { globby } from 'globby'
 import Unocss from 'unocss/vite'
 import vueJsxVapor from 'vue-jsx-vapor/vite'
 import reactivityFunction from 'unplugin-vue-reactivity-function/vite'

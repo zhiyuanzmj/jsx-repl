@@ -13,7 +13,6 @@ export default defineVaporComponent(({ ssr = false }) => {
 
   let containerRef = $useRef()
   let runtimeError = $ref<string>()
-  let runtimeWarning = $ref<string>()
 
   let sandbox: HTMLIFrameElement
   let proxy: PreviewProxy
@@ -136,13 +135,6 @@ export default defineVaporComponent(({ ssr = false }) => {
           } else {
             runtimeError = log.args[0]
           }
-        } else if (log.level === 'warn') {
-          if (log.args[0].toString().includes('[Vue warn]')) {
-            runtimeWarning = log.args
-              .join('')
-              .replace(/\[Vue warn\]:/, '')
-              .trim()
-          }
         }
       },
       on_console_group: (action: any) => {
@@ -182,7 +174,6 @@ export default defineVaporComponent(({ ssr = false }) => {
       console.clear()
     }
     runtimeError = undefined
-    runtimeWarning = undefined
 
     try {
       // compile code to simulated module system

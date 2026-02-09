@@ -46,7 +46,7 @@ export default mergeConfig(base, {
   },
   build: {
     target: 'esnext',
-    minify: false,
+    minify: 'terser',
     lib: {
       entry: './src/index.ts',
       formats: ['es'],

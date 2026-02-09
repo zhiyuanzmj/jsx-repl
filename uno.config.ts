@@ -17,7 +17,7 @@ export default defineConfig({
   },
   content: {
     pipeline: {
-      include: [/\.(vue|tsx?|html)($|\?)/],
+      include: [/\.(vue|tsx|html)($|\?)/],
     },
   },
   presets: [presetUno(), presetAttributify(), presetIcons()],
