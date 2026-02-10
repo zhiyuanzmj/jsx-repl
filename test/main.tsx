@@ -7,7 +7,7 @@ const window = globalThis.window as any
 window.process = { env: {}, cwd: () => '/' }
 
 const App = defineVaporComponent(() => {
-  const src = $useRoutePath()
+  const src = $useRoutePath('vue-jsx')
   return <Repl v-model={src} />
 })
 

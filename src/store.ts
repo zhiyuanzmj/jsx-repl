@@ -135,16 +135,29 @@ export function useStore({
     return viteConfig.value
   }
 
-  async function setDefaultFile() {
+  async function setDefaultFiles() {
     await setFiles(await getTemplate())
     errors.value = []
+    for (const [filename, file] of Object.entries(files.value)) {
+      if (
+        ![
+          tsMacroConfigFile,
+          viteConfigFile,
+          tsconfigFile,
+          packageFile,
+        ].includes(filename)
+      )
+        await compileFile(store, file).then((errs) =>
+          errors.value.push(...errs),
+        )
+    }
   }
-  setDefaultFile().then(() => init())
+  setDefaultFiles().then(() => init())
 
   async function init() {
     watch(preset, async () => {
       loading.value = true
-      await setDefaultFile()
+      await setDefaultFiles()
       activeFilename.value = appFile
       history.pushState(null, '', location.pathname + location.search)
       loading.value = false
@@ -183,22 +196,6 @@ export function useStore({
         }
       },
     )
-
-    // compile rest of the files
-    errors.value = []
-    for (const [filename, file] of Object.entries(files.value)) {
-      if (
-        ![
-          tsMacroConfigFile,
-          viteConfigFile,
-          tsconfigFile,
-          packageFile,
-        ].includes(filename)
-      )
-        await compileFile(store, file).then((errs) =>
-          errors.value.push(...errs),
-        )
-    }
 
     loading.value = false
   }
@@ -310,7 +307,6 @@ export function useStore({
     } catch (err) {
       console.error(err)
       alert('Failed to load code from URL.')
-      return setDefaultFile()
     }
     return saved
   }
