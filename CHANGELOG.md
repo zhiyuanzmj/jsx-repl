@@ -1,3 +1,13 @@
+## [0.0.9](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.8...v0.0.9) (2026-02-10)
+
+
+### Bug Fixes
+
+* ensure css compiler when preset update ([2c39d5b](https://github.com/zhiyuanzmj/jsx-repl/commit/2c39d5bbaf485853664a8bc9c6ba0a1f98f63f4b))
+* remove otherProject for Project ([3fa52e4](https://github.com/zhiyuanzmj/jsx-repl/commit/3fa52e47fd2188a1e3238aedf762ebde81ee4554))
+
+
+
 ## [0.0.8](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.7...v0.0.8) (2026-02-10)
 
 
