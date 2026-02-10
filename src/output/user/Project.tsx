@@ -120,15 +120,6 @@ export default defineVaporComponent(() => {
     }
   }
 
-  const otherProject = $computed(() => {
-    return (
-      store.project &&
-      projects.every((project) => project.id !== store.project?.id) &&
-      publicProjects.every((project) => project.id !== store.project?.id) &&
-      store.project
-    )
-  })
-
   return (
     <div class="flex items-center gap-2">
       <Menu distance={8}>
@@ -226,18 +217,13 @@ export default defineVaporComponent(() => {
       </Menu>
 
       <select
+        key={Object.keys(projectsGroup.value).length}
         v-model={store.preset}
         class="ml-auto b-(0 r-4 $border) bg-$border h-6 my-auto rounded outline-none px-1 text"
       >
         <optgroup label="Default">
           <option v-for={(_, presetName) in store.presets} key={presetName}>
             {presetName}
-          </option>
-          <option
-            v-if={otherProject}
-            value={otherProject.userName + '/' + otherProject.name}
-          >
-            {otherProject.name}
           </option>
         </optgroup>
         <hr />
