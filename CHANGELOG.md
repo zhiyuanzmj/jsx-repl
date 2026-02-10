@@ -1,3 +1,12 @@
+## [0.0.8](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.7...v0.0.8) (2026-02-10)
+
+
+### Bug Fixes
+
+* init compiler error ([7a83abc](https://github.com/zhiyuanzmj/jsx-repl/commit/7a83abc7c1009893e3f4da1e60e907fa063ffbcc))
+
+
+
 ## [0.0.7](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.6...v0.0.7) (2026-02-09)
 
 
