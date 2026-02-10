@@ -150,9 +150,14 @@ export function useStore({
       loading.value = false
     })
 
-    watchEffect(() => {
-      compileFile(store, activeFile.value).then((errs) => (errors.value = errs))
-    })
+    watch(
+      () => [activeFile.value.code, activeFile.value.filename],
+      () => {
+        compileFile(store, activeFile.value).then(
+          (errs) => (errors.value = errs),
+        )
+      },
+    )
 
     watch(
       () => [
@@ -188,7 +193,6 @@ export function useStore({
           viteConfigFile,
           tsconfigFile,
           packageFile,
-          activeFile.value.filename,
         ].includes(filename)
       )
         await compileFile(store, file).then((errs) =>

@@ -98,7 +98,6 @@
     "nitropack": "^2.12.5",
     "ofetch": "^1.4.1",
     "path-browserify": "^1.0.1",
-    "perfect-debounce": "^2.1.0",
     "postcss": "^8.5.6",
     "postcss-modules": "^6.0.1",
     "prettier": "^3.6.2",

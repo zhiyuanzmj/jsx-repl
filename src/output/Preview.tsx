@@ -5,7 +5,7 @@ import { PreviewProxy } from './PreviewProxy'
 import { compileModulesForPreview } from './moduleCompiler'
 import { injectKeyProps } from '../../src/types'
 import { useRef } from 'vue-jsx-vapor'
-import { debounce } from 'perfect-debounce'
+import { debounce } from '../utils'
 
 export default defineVaporComponent(({ ssr = false }) => {
   const { store, clearConsole, previewTheme, previewOptions } =
@@ -151,18 +151,11 @@ export default defineVaporComponent(({ ssr = false }) => {
     sandbox.addEventListener('load', () => {
       proxy.handle_links()
       stopUpdateWatcher = watch(
-        [
-          () =>
-            Object.values(store.files).map((file) => [
-              file.code,
-              file.filename,
-            ]),
-          () => store.importMap,
+        () => [
+          Object.values(store.files).map((file) => [file.code, file.filename]),
+          store.importMap,
         ],
-        debounce(updatePreview, 16, {
-          leading: false,
-          trailing: false,
-        }),
+        debounce(updatePreview, 16),
         { deep: true, immediate: true },
       )
       switchPreviewTheme()
@@ -206,16 +199,6 @@ export default defineVaporComponent(({ ssr = false }) => {
   function reload() {
     sandbox.contentWindow?.location.reload()
   }
-
-  watch(
-    () => runtimeError,
-    () => {
-      if (runtimeError) {
-        reload()
-      }
-    },
-    { once: true },
-  )
 
   defineExpose$({ reload, container: containerRef })
 

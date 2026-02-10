@@ -15,7 +15,7 @@
 }
 .v-popper--theme-tooltip .v-popper__arrow-inner {
   visibility: visible;
-  @apply: border-bg;
+  @apply: border-bg-base;
 }
 .v-popper--theme-tooltip .v-popper__arrow-outer {
   @apply: border-base;
