@@ -12,7 +12,7 @@ export default defineVaporComponent(
     const { store, splitPaneOptions, layout } = $inject(injectKeyProps)!
 
     let getOffset = () =>
-      ((37.2 * (layout === 'vertical' ? 0 : 1)) /
+      ((37.2 * (layout === 'vertical' ? 2 : 1)) /
         document.querySelector('.jsx-repl')!.clientHeight) *
       100
     const state = reactive({
