@@ -1,3 +1,12 @@
+## [0.0.10](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.9...v0.0.10) (2026-02-11)
+
+
+### Bug Fixes
+
+* prevent hidden config when vertical layout ([2a33159](https://github.com/zhiyuanzmj/jsx-repl/commit/2a33159986287f10d1b7b90f287075c9657a2550))
+
+
+
 ## [0.0.9](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.8...v0.0.9) (2026-02-10)
 
 
