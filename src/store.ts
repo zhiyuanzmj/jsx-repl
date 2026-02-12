@@ -526,7 +526,9 @@ export type Store = Pick<
   | 'theme'
   | 'loading'
   | 'slim'
->
+> & {
+  monacoInitialized?: boolean
+}
 
 export type CompiledStack = {
   name: string

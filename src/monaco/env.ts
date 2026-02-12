@@ -9,9 +9,8 @@ import * as languageConfigs from './language-configs'
 import type { WorkerLanguageService } from '@volar/monaco/worker'
 import { debounce } from '../utils'
 
-let initialized = false
 export function initMonaco(store: Store) {
-  if (initialized) return
+  if (store.monacoInitialized) return
   loadMonacoEnv(store)
 
   watchEffect(() => {
@@ -38,7 +37,7 @@ export function initMonaco(store: Store) {
     }
   })
 
-  initialized = true
+  store.monacoInitialized = true
 }
 
 export class WorkerHost {
@@ -171,6 +170,7 @@ export function loadMonacoEnv(store: Store) {
     })
   }, 250)
   languages.onLanguage('javascript', () => store.reloadLanguageTools!())
+  store.reloadLanguageTools!()
 
   // Support for go to definition
   editor.registerEditorOpener({

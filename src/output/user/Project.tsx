@@ -45,7 +45,7 @@ export default defineVaporComponent(() => {
   let publicProjects = $ref<Project[]>([])
   async function getPublicProjects() {
     const { data } = await ofetch('/api/project').catch(() => ({ data: [] }))
-    publicProjects = data
+    publicProjects = data || []
   }
   getPublicProjects()
 
