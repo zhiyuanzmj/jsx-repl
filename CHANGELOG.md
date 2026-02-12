@@ -1,3 +1,12 @@
+## [0.0.11](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.10...v0.0.11) (2026-02-12)
+
+
+### Bug Fixes
+
+* use store flag for Monaco init ([ebd2235](https://github.com/zhiyuanzmj/jsx-repl/commit/ebd22355ad89bff12c19a7bb9a2dd46c1dda878f))
+
+
+
 ## [0.0.10](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.9...v0.0.10) (2026-02-11)
 
 
