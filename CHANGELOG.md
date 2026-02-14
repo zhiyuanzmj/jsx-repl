@@ -1,3 +1,12 @@
+## [0.0.12](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.11...v0.0.12) (2026-02-14)
+
+
+### Bug Fixes
+
+* dark mode ([435bc33](https://github.com/zhiyuanzmj/jsx-repl/commit/435bc339b53b85fd4d122247f7983c7202435b48))
+
+
+
 ## [0.0.11](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.10...v0.0.11) (2026-02-12)
 
 
