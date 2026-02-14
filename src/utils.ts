@@ -124,11 +124,11 @@ export function addEsmPrefix(code: string, importMap: ImportMap) {
 }
 
 export function useDark(defaultTheme?: 'dark' | 'light') {
-  const theme = ref<'dark' | 'light'>(defaultTheme as any)
   const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)')
-  if (!theme.value) {
-    theme.value = darkThemeMq.matches ? 'dark' : 'light'
-  }
+  const theme = ref<'dark' | 'light'>(
+    defaultTheme ||
+      (document.documentElement.classList.contains('dark') ? 'dark' : 'light'),
+  )
   darkThemeMq.addEventListener('change', (e) => {
     theme.value = e.matches ? 'dark' : 'light'
   })
@@ -155,8 +155,8 @@ export function useDark(defaultTheme?: 'dark' | 'light') {
   }
   watch(
     theme,
-    (v) => {
-      if (v === 'dark') {
+    (theme) => {
+      if (theme === 'dark') {
         document.documentElement.classList.add('dark')
       } else {
         document.documentElement.classList.remove('dark')

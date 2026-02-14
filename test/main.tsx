@@ -8,7 +8,7 @@ window.process = { env: {}, cwd: () => '/' }
 
 const App = defineVaporComponent(() => {
   const src = $useRoutePath('vue-jsx')
-  return <Repl v-model={src} />
+  return <Repl v-model={src} theme="dark" />
 })
 
 const app = createVaporApp(App)
