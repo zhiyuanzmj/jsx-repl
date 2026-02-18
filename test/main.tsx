@@ -8,6 +8,7 @@ window.process = { env: {}, cwd: () => '/' }
 
 const App = defineVaporComponent(() => {
   const src = $useRoutePath('vue-jsx')
+  window.NITRO_CLIENT_ID = import.meta.env.NITRO_CLIENT_ID
   return <Repl v-model={src} theme="dark" />
 })
 
