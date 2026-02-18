@@ -32,7 +32,7 @@
     "tag": "latest"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "DEV=true vite",
     "dev:lib": "DEV=true vite build -c vite.lib.config.ts --watch",
     "play": "pnpm run -C ./playground dev",
     "server:dev": "nitro dev",

@@ -12,8 +12,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: Production
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NITRO_CLIENT_ID: ${{ secrets.NITRO_CLIENT_ID }}
+      NITRO_CLIENT_SECRET: ${{ secrets.NITRO_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
         with:

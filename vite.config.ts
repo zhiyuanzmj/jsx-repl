@@ -47,6 +47,7 @@ export default defineConfig({
   },
   build: {
     outDir: './.vercel/output/static',
+    minify: process.env.DEV ? false : 'terser',
     rollupOptions: {
       external: ['node:worker_threads', 'unconfig', '@babel/core'],
       plugins: [
