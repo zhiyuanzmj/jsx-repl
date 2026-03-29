@@ -101,10 +101,8 @@ export function useStore({
     for (const key in result) {
       let value = result[key]
       if (value) {
-        if (/^(?:\^|~|\d)/.test(value)) {
+        if (/^(?:\^|~|\d|latest)/.test(value)) {
           value = `https://esm.sh/${key}@${value}`
-        } else if (value === 'latest') {
-          value = `https://esm.sh/${key}`
         } else if (value.startsWith('https://pkg.pr.new/')) {
           value = value.replaceAll('pkg.pr.new', 'esm.sh/pkg.pr.new')
         } else if (!value.startsWith('http')) {
