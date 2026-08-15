@@ -51,8 +51,9 @@ export async function reloadLanguageTools(store: Store) {
   disposeVue?.()
 
   let dependencies: Record<string, string> = {
-    '@vue/runtime-vapor': '3.6.0-beta.12',
-    '@vue-jsx-vapor/runtime': '3.2.16',
+    '@vue/runtime-vapor': '3.6.0-rc.3',
+    '@vue/runtime-core': '3.6.0-rc.3',
+    '@vue-jsx-vapor/runtime': '3.2.21',
     ...store.dependencies,
   }
 

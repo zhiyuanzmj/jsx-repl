@@ -3,4 +3,5 @@ packages:
 
 catalog:
   vite: ^8.0.0-beta.13
-  vue: '3.6.0-beta.15'
+  vue: '3.6.0-rc.3'
+  vue-jsx-vapor: '3.2.21'

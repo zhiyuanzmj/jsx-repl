@@ -45,7 +45,7 @@ export function useStore({
   loading = ref(true),
 
   locale = ref(),
-  typescriptVersion = ref('latest'),
+  typescriptVersion = ref('6.0.3'),
   reloadLanguageTools = ref(),
 
   preset = ref('vue-jsx'),
