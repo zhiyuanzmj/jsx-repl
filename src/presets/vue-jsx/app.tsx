@@ -1,4 +1,5 @@
 import { defineComponent, ref } from 'vue'
+import { For } from 'vue-jsx'
 
 export default defineComponent(() => {
   const count = ref(1)
@@ -8,7 +9,7 @@ export default defineComponent(() => {
       <button onClick={() => count.value++}>+</button>
       <button onClick={() => count.value--}>-</button>
 
-      <div>{count.value}</div>
+      <For in={count.value}>{(item) => <div>{item}</div>}</For>
     </>
   )
 })
