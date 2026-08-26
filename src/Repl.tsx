@@ -12,7 +12,7 @@ import { useDark, useRouteQuery } from './utils'
 
 import 'floating-vue/dist/style.css'
 import './dropdown.css'
-import { useFullProps } from 'vue-jsx-vapor'
+import { useFullProps } from 'vue-jsx'
 import Monaco from './monaco/Monaco'
 
 export interface Props {

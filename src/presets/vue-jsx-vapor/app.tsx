@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { For } from 'vue-jsx/vapor'
 
 export default () => {
   const count = ref(1)
@@ -8,7 +9,7 @@ export default () => {
       <button onClick={() => count.value++}>+</button>
       <button onClick={() => count.value--}>-</button>
 
-      <div v-for={index in count.value}>{index}</div>
+      <For in={count.value}>{(index) => <div>{index}</div>}</For>
     </>
   )
 }

@@ -54,6 +54,7 @@ export async function reloadLanguageTools(store: Store) {
     '@vue/runtime-vapor': '3.6.0-rc.5',
     '@vue/runtime-core': '3.6.0-rc.5',
     '@vue-jsx-vapor/runtime': '3.2.22',
+    '@vue-jsx/runtime': '3.3.0-beta.1',
     ...store.dependencies,
   }
 

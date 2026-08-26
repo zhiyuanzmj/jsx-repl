@@ -4,7 +4,7 @@ import srcdoc from './srcdoc.html?raw'
 import { PreviewProxy } from './PreviewProxy'
 import { compileModulesForPreview } from './moduleCompiler'
 import { injectKeyProps } from '../../src/types'
-import { useRef } from 'vue-jsx-vapor'
+import { useRef } from 'vue-jsx'
 import { debounce } from '../utils'
 
 export default defineVaporComponent(({ ssr = false }) => {

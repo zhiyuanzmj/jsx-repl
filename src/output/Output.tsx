@@ -8,7 +8,7 @@ import {
 import SplitPane from '../SplitPane'
 import Devtools from './Devtools'
 import Project from './user/Project'
-import { useRef } from 'vue-jsx-vapor'
+import { useRef } from 'vue-jsx'
 import { useDiff } from './diff'
 import type { CompiledStack } from '../store'
 import SourceMap from './SourceMap'

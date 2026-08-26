@@ -1,12 +1,6 @@
 // @ts-nocheck
-import vueJsxVapor from 'vue-jsx-vapor/raw.js'
+import vueJsx from 'vue-jsx/raw.js'
 
 export default {
-  plugins: [
-    vueJsxVapor({
-      interop: true,
-      macros: true,
-      sourceMap: true,
-    }),
-  ],
+  plugins: [vueJsx()],
 }

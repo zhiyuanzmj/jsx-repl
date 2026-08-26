@@ -1,4 +1,4 @@
-import type { WheelEvent } from 'vue-jsx-vapor'
+import type { WheelEvent } from 'vue-jsx'
 import { injectKeyProps } from '../../src/types'
 import {
   type ReplFile,

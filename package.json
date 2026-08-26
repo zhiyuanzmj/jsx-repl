@@ -120,7 +120,7 @@
     "volar-service-typescript": "^0.0.64",
     "vscode-uri": "^3.1.0",
     "vue": "catalog:",
-    "vue-jsx-vapor": "catalog:"
+    "vue-jsx": "catalog:"
   },
   "prisma": {
     "schema": "./server/prisma/schema.prisma"

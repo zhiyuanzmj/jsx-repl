@@ -3,7 +3,7 @@ import { initMonaco } from './env'
 import { getOrCreateModel } from './utils'
 import { type EditorMode, injectKeyProps } from '../types'
 import { registerHighlighter } from './highlight'
-import { useRef } from 'vue-jsx-vapor'
+import { useRef } from 'vue-jsx'
 
 export default defineVaporComponent(
   ({

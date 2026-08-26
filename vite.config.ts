@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import replace from '@rollup/plugin-replace'
 import Unocss from 'unocss/vite'
-import vueJsxVapor from 'vue-jsx-vapor/vite'
+import vueJsx from 'vue-jsx/vite'
 import reactivityFunction from 'unplugin-vue-reactivity-function/vite'
 import inspect from 'vite-plugin-inspect'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -11,7 +11,8 @@ export default defineConfig({
   plugins: [
     reactivityFunction(),
     Unocss(),
-    vueJsxVapor({
+    vueJsx({
+      vapor: true,
       macros: {
         defineExpose: {
           alias: ['defineExpose', 'defineExpose$'],
@@ -29,7 +30,7 @@ export default defineConfig({
       imports: [
         'vue',
         { from: 'vue', imports: ['defineVaporComponent', 'defineComponent'] },
-        { from: 'vue-jsx-vapor', imports: ['useRef'] },
+        { from: 'vue-jsx', imports: ['useRef'] },
       ],
     }),
     visualizer(),
@@ -43,7 +44,7 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify('production'),
   },
   optimizeDeps: {
-    include: ['vue-jsx-vapor'],
+    include: ['vue-jsx'],
   },
   build: {
     outDir: './.vercel/output/static',
