@@ -91,7 +91,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://localhost:3000',
-        target: 'https://repl.zmjs.dev',
+        target: 'https://repl.vuejsx.dev',
         changeOrigin: true,
       },
     },

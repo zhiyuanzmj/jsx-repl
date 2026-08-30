@@ -37,6 +37,6 @@ jobs:
           ARGS: -az --delete
           FOLDER: './.vercel/output/static/'
           SERVER_PORT: '22'
-          SERVER_IP: zmjs.dev
+          SERVER_IP: vuejsx.dev
           USERNAME: root
           SERVER_DESTINATION: /usr/share/nginx/html/repl
