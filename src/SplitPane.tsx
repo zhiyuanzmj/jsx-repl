@@ -64,6 +64,13 @@ export default defineVaporComponent(
       state.viewWidth = el.offsetWidth
     }
 
+    function expandPane(pane: 'left' | 'right') {
+      if (!props.inline || !store.slim) return
+
+      const offset = getOffset()
+      state.split = pane === 'left' ? 100 - offset : offset
+    }
+
     const slots = defineSlots({
       left: () => <div />,
       right: () => <div />,
@@ -90,6 +97,7 @@ export default defineVaporComponent(
           style={{
             [isVertical ? 'height' : 'width']: boundSplit + '%',
           }}
+          onClick={() => expandPane('left')}
         >
           <slots.left />
           <div
@@ -103,6 +111,7 @@ export default defineVaporComponent(
           style={{
             [isVertical ? 'height' : 'width']: 100 - boundSplit + '%',
           }}
+          onClick={() => expandPane('right')}
         >
           <div class="view-size" v-show={state.dragging}>
             {`${state.viewWidth}px x ${state.viewHeight}px`}
