@@ -11,8 +11,9 @@ import Project from './user/Project'
 import { useRef } from 'vue-jsx'
 import { useDiff } from './diff'
 import type { CompiledStack } from '../store'
-import SourceMap from './SourceMap'
+// import SourceMap from './SourceMap'
 import { downloadProject } from './download'
+import { Fragment } from 'vue'
 
 const CompiledSelect = defineVaporComponent(() => {
   const { store } = $inject(injectKeyProps)!
@@ -95,7 +96,7 @@ export default defineVaporComponent(
     let previewRef = $useRef()
     const modes = $computed(() =>
       props.showCompileOutput
-        ? (['js', 'ts', 'css', 'ast', 'sourcemap', 'devtools'] as const)
+        ? (['js', 'ts', 'css', 'ast', 'devtools'] as const)
         : ([] as const),
     )
 
@@ -197,19 +198,25 @@ export default defineVaporComponent(
         <template v-slot:right>
           <div class="flex h-full flex-1 flex-col overflow-hidden">
             <div class="tab-buttons">
-              <button
-                v-for={m in modes}
-                key={m}
-                class={{ active: mode === m, 'ml-auto!': m === 'sourcemap' }}
-                onClick={() => {
-                  mode = m
-                  if (m === 'devtools') {
-                    devtoolsLoaded = true
+              <Fragment v-for={m in modes}>
+                <button
+                  v-if={
+                    ['ts', 'css', 'ast'].includes(m)
+                      ? activeFile.compiled[m]
+                      : true
                   }
-                }}
-              >
-                <span>{m}</span>
-              </button>
+                  key={m}
+                  class={{ active: mode === m, 'ml-auto!': m === 'devtools' }}
+                  onClick={() => {
+                    mode = m
+                    if (m === 'devtools') {
+                      devtoolsLoaded = true
+                    }
+                  }}
+                >
+                  <span>{m}</span>
+                </button>
+              </Fragment>
 
               <CompiledSelect v-if={['js', 'ts'].includes(store.outputMode)} />
             </div>
@@ -219,10 +226,7 @@ export default defineVaporComponent(
               theme={store.theme}
               v-show={mode === 'devtools'}
             />
-            <template v-if={mode === 'sourcemap'}>
-              {/*TODO Can't use v-else-if */}
-              <SourceMap />
-            </template>
+            {/*<SourceMap v-else-if={mode === 'sourcemap'} />*/}
             <props.editorComponent
               v-else-if={mode === 'js'}
               ref={(e) => {

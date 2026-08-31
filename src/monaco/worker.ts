@@ -91,7 +91,7 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
     try {
       tsMacroOptions = await import(
         /* @vite-ignore */ msg.data.tsMacroConfig
-      ).then((i) => i.default)
+      ).then((i) => i.default || { plugins: [] })
     } catch (e) {
       tsMacroOptions = { plugins: [] }
       console.error(e)
