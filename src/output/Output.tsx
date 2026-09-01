@@ -90,6 +90,7 @@ export default defineVaporComponent(
     editorComponent: EditorComponentType
     showCompileOutput?: boolean
     ssr: boolean
+    previewActions?: () => JSX.Element
   }) => {
     const { store, slim, layout } = $inject(injectKeyProps)!
     const { activeFile } = $(store)
@@ -156,31 +157,39 @@ export default defineVaporComponent(
               </button>
 
               <div class="actions ml-auto flex items-center gap-2 pr-2">
-                <Project v-if={!slim} />
+                <props.previewActions v-if={props.previewActions} />
+                <template>
+                  <Project v-if={!slim} />
 
-                <button class="text-xl ml-1! i-carbon:renew" onClick={reload} />
+                  <button
+                    class="text-xl ml-1! i-carbon:renew"
+                    onClick={reload}
+                  />
 
-                <button
-                  v-if={!store.slim}
-                  class={[
-                    'text-xl',
-                    store.theme === 'dark' ? 'i-carbon:moon' : 'i-carbon:light',
-                  ]}
-                  onClick={toggleDark}
-                />
+                  <button
+                    v-if={!store.slim}
+                    class={[
+                      'text-xl',
+                      store.theme === 'dark'
+                        ? 'i-carbon:moon'
+                        : 'i-carbon:light',
+                    ]}
+                    onClick={toggleDark}
+                  />
 
-                <button
-                  class="i-carbon:download text-xl"
-                  onClick={() => downloadProject(store)}
-                />
+                  <button
+                    class="i-carbon:download text-xl"
+                    onClick={() => downloadProject(store)}
+                  />
 
-                <button
-                  v-if={!store.slim}
-                  class="i-carbon:logo-github text-2xl"
-                  onClick={jumpToGithub}
-                />
+                  <button
+                    v-if={!store.slim}
+                    class="i-carbon:logo-github text-2xl"
+                    onClick={jumpToGithub}
+                  />
 
-                <Login v-if={!slim} />
+                  <Login v-if={!slim} />
+                </template>
               </div>
             </div>
             <Preview

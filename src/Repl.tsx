@@ -66,6 +66,9 @@ export const Repl = defineVaporComponent(
     slim = false,
     theme,
   }: Props) => {
+    const slots = defineSlots<{
+      previewActions?: () => any
+    }>()
     const preset = defineModel<string>({ default: 'vue-jsx' })!
     let store = useStore({ slim: ref(slim), preset, theme: useDark(theme) })
 
@@ -110,6 +113,7 @@ export const Repl = defineVaporComponent(
             <Output
               ref={(e) => (outputRef = e)}
               editorComponent={editor}
+              previewActions={slots.previewActions}
               showCompileOutput={showCompileOutput}
               ssr={!!ssr}
             />
