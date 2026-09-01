@@ -157,8 +157,11 @@ export default defineVaporComponent(
               </button>
 
               <div class="actions ml-auto flex items-center gap-2 pr-2">
-                <props.previewActions v-if={props.previewActions} />
-                <template>
+                {/*TODO can't use <props.previewActions></props.previewActions>*/}
+                <template v-if={props.previewActions}>
+                  {props.previewActions?.()}
+                </template>
+                <template v-else>
                   <Project v-if={!slim} />
 
                   <button
