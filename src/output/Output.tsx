@@ -144,6 +144,8 @@ export default defineVaporComponent(
     }
 
     let devtoolsLoaded = $ref(mode === 'devtools')
+    // TODO interop error
+    const PreviewActions = { setup: () => () => props.previewActions?.() }
 
     return (
       <SplitPane inline={true} layout="vertical">
@@ -157,10 +159,7 @@ export default defineVaporComponent(
               </button>
 
               <div class="actions ml-auto flex items-center gap-2 pr-2">
-                {/*TODO can't use <props.previewActions></props.previewActions>*/}
-                <template v-if={props.previewActions}>
-                  {props.previewActions?.()}
-                </template>
+                <PreviewActions v-if={props.previewActions} />
                 <template v-else>
                   <Project v-if={!slim} />
 
@@ -230,7 +229,9 @@ export default defineVaporComponent(
                 </button>
               </Fragment>
 
-              <CompiledSelect v-if={['js', 'ts'].includes(store.outputMode)} />
+              <CompiledSelect
+                v-if={['js', 'ts'].includes(store.outputMode) && !store.slim}
+              />
             </div>
             <Devtools
               v-if={devtoolsLoaded && previewRef?.container}
