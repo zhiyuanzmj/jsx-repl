@@ -1,3 +1,19 @@
+## [0.0.17](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.16...v0.0.17) (2026-09-02)
+
+
+### Bug Fixes
+
+* interop error ([b92a042](https://github.com/zhiyuanzmj/jsx-repl/commit/b92a042e090827ef10d14fb63367429fb7fb9186))
+* remove babel-typescript options ([b80c7b9](https://github.com/zhiyuanzmj/jsx-repl/commit/b80c7b94df31586658072393ed5cc52f5a583c4d))
+* support expand pane for slim mode ([bba877f](https://github.com/zhiyuanzmj/jsx-repl/commit/bba877fd7cd082349df8111f2ab2658b69a5b7b2))
+
+
+### Features
+
+* add previewAction slot ([b89348f](https://github.com/zhiyuanzmj/jsx-repl/commit/b89348f272eab79223903fea28a092c25f3fb692))
+
+
+
 ## [0.0.16](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.15...v0.0.16) (2026-06-14)
 
 

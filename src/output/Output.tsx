@@ -145,7 +145,7 @@ export default defineVaporComponent(
 
     let devtoolsLoaded = $ref(mode === 'devtools')
     // TODO interop error
-    const PreviewActions = { setup: () => () => props.previewActions?.() }
+    const PreviewActions = defineComponent(() => () => props.previewActions?.())
 
     return (
       <SplitPane inline={true} layout="vertical">
@@ -213,7 +213,7 @@ export default defineVaporComponent(
                 <button
                   v-if={
                     ['ts', 'css', 'ast'].includes(m)
-                      ? activeFile.compiled[m]
+                      ? activeFile.compiled[m as 'js' | 'css' | 'ast']
                       : true
                   }
                   key={m}

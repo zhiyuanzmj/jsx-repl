@@ -1,6 +1,6 @@
 {
   "name": "jsx-repl",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "JSX REPL",
   "packageManager": "pnpm@10.15.1",
   "type": "module",
