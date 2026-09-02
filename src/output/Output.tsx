@@ -240,8 +240,9 @@ export default defineVaporComponent(
               v-show={mode === 'devtools'}
             />
             {/*<SourceMap v-else-if={mode === 'sourcemap'} />*/}
+            {/*TODO Can't use v-else-if */}
             <props.editorComponent
-              v-else-if={mode === 'js'}
+              v-if={mode === 'js'}
               ref={(e) => {
                 store.outputEditor = e?.editor
               }}
