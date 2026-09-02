@@ -1,4 +1,4 @@
-## [0.0.17](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.16...v0.0.17) (2026-09-02)
+## [0.0.18](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.16...v0.0.18) (2026-09-02)
 
 
 ### Bug Fixes
