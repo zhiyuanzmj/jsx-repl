@@ -74,19 +74,35 @@ let disposeVue: undefined | (() => void)
 export async function reloadLanguageTools(store: Store) {
   disposeVue?.()
 
-  let dependencies: Record<string, string> = {
-    '@vue/runtime-vapor': '3.6.0-rc.7',
-    '@vue/runtime-core': '3.6.0-rc.7',
-    '@vue-jsx-vapor/runtime': '3.2.23',
-    '@vue-jsx/runtime': '3.3.0-beta.1',
-    ...store.dependencies,
+  const userDependencies = store.dependencies
+
+  // The internal runtime packages are published in lockstep with their
+  // public counterparts (`vue`, `vue-jsx`), so derive their versions from
+  // the user's package.json instead of pinning them here. Explicit entries
+  // in the user's package.json still win over the derived versions.
+  const toVersion = (value?: string) =>
+    value && !value.startsWith('http')
+      ? value.split('?')[0].replace('^', '')
+      : undefined
+
+  const derived: Record<string, string> = {}
+  const vueVersion = toVersion(userDependencies['vue'])
+  if (vueVersion) {
+    derived['@vue/runtime-vapor'] = vueVersion
+    derived['@vue/runtime-core'] = vueVersion
+  }
+  const vueJsxVersion = toVersion(userDependencies['vue-jsx'])
+  if (vueJsxVersion) {
+    derived['@vue-jsx/runtime'] = vueJsxVersion
+  }
+
+  const dependencies: Record<string, string> = {
+    ...derived,
+    ...userDependencies,
   }
 
   if (store.typescriptVersion) {
-    dependencies = {
-      ...dependencies,
-      typescript: store.typescriptVersion,
-    }
+    dependencies.typescript = store.typescriptVersion
   }
 
   const worker = editor.createWebWorker<WorkerLanguageService>({

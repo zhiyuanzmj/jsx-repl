@@ -170,6 +170,17 @@ export function useStore({
       },
     )
 
+    // Let the user's package.json drive the TypeScript version used by
+    // the language service. Falls back to the default when not specified.
+    watch(
+      () => dependencies.value['typescript'],
+      (version) => {
+        const normalized = version?.split('?')[0].replace('^', '')
+        if (normalized) typescriptVersion.value = normalized
+      },
+      { immediate: true },
+    )
+
     watch(
       () => [
         files.value[tsMacroConfigFile]?.code,
