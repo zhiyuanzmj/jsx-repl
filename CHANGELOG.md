@@ -1,3 +1,13 @@
+## [0.0.19](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.18...v0.0.19) (2026-09-10)
+
+
+### Features
+
+* support custom typescript version from package.json ([f1d9b1e](https://github.com/zhiyuanzmj/jsx-repl/commit/f1d9b1ef5e5c3345d51424d76f195779a5d6119c))
+* support multiple repl in one page ([2ccb2a8](https://github.com/zhiyuanzmj/jsx-repl/commit/2ccb2a886734d27e263327493b348ee421bb4d73))
+
+
+
 ## [0.0.18](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.16...v0.0.18) (2026-09-02)
 
 
