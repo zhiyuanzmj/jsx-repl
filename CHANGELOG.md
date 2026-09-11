@@ -1,9 +1,14 @@
-## [0.0.19](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.18...v0.0.19) (2026-09-10)
+## [0.0.20](https://github.com/zhiyuanzmj/jsx-repl/compare/v0.0.18...v0.0.20) (2026-09-11)
+
+
+### Bug Fixes
+
+* **monaco:** restore type hints broken by per-instance URI prefix (2ccb2a8) ([bc4cd16](https://github.com/zhiyuanzmj/jsx-repl/commit/bc4cd163840df5498e6155766783ce86ad43e8da))
 
 
 ### Features
 
-* support custom typescript version from package.json ([f1d9b1e](https://github.com/zhiyuanzmj/jsx-repl/commit/f1d9b1ef5e5c3345d51424d76f195779a5d6119c))
+* support custom typescript version from package.json ([05914d7](https://github.com/zhiyuanzmj/jsx-repl/commit/05914d797d7945fac445ae045685b4d252b9d268))
 * support multiple repl in one page ([2ccb2a8](https://github.com/zhiyuanzmj/jsx-repl/commit/2ccb2a886734d27e263327493b348ee421bb4d73))
 
 
