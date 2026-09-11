@@ -17,14 +17,17 @@ import {
   toString,
 } from 'ts-macro'
 
+// filePath is the virtual code's uri path, scoped with the per-instance
+// prefix (see asUri below), e.g. `/1/src/App.tsx`
 const getVirtualCodePlugin = (
   name: string,
   index: number,
+  uriPrefix: string,
   enforce?: string,
 ) => ({
   name: 'virtual-code' + index,
   resolveVirtualCode({ codes, filePath }: TsmVirtualCode) {
-    if (filePath.startsWith('/src')) {
+    if (filePath.startsWith(uriPrefix + 'src')) {
       self.postMessage({
         filePath,
         code: toString(codes),
@@ -53,6 +56,7 @@ let tsMacroOptions: any
 
 function resolvePlugins(
   plugins: (TsmLanguagePlugin | undefined)[],
+  uriPrefix: string,
 ): TsmLanguagePlugin[] {
   const prePlugins: TsmLanguagePlugin[] = []
   const postPlugins: TsmLanguagePlugin[] = []
@@ -64,17 +68,17 @@ function resolvePlugins(
       if (p.enforce === 'pre')
         prePlugins.push(
           { ...p, enforce: undefined },
-          getVirtualCodePlugin(p.name, index, p.enforce),
+          getVirtualCodePlugin(p.name, index, uriPrefix, p.enforce),
         )
       else if (p.enforce === 'post')
         postPlugins.push(
           { ...p, enforce: undefined },
-          getVirtualCodePlugin(p.name, index, p.enforce),
+          getVirtualCodePlugin(p.name, index, uriPrefix, p.enforce),
         )
       else
         normalPlugins.push(
           { ...p, enforce: undefined },
-          getVirtualCodePlugin(p.name, index, p.enforce),
+          getVirtualCodePlugin(p.name, index, uriPrefix, p.enforce),
         )
     })
   }
@@ -109,22 +113,29 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
       ctx: monaco.worker.IWorkerContext<WorkerHost>,
       { tsconfig, dependencies, uriPrefix }: CreateData,
     ) => {
+      // '/1/src/App.tsx' -> '/src/App.tsx' (keep the leading slash:
+      // the language service must only ever see absolute paths)
       const asFileName = (uri: URI) =>
         uri.path.startsWith(uriPrefix)
-          ? uri.path.slice(uriPrefix.length)
+          ? uri.path.slice(uriPrefix.length - 1)
           : uri.path
-      const asUri = (fileName: string): URI => URI.file(fileName)
+      // must round-trip with asFileName: the language service maps script
+      // names back to monaco model uris via asUri to read their contents
+      // '/src/App.tsx' -> '/1/src/App.tsx' — strip the leading slash first,
+      // uriPrefix already ends with one (avoids 'file:///1//src/App.tsx')
+      const asUri = (fileName: string): URI =>
+        URI.file(uriPrefix + fileName.replace(/^\//, ''))
       const env: LanguageServiceEnvironment = {
         workspaceFolders: [URI.file('/')],
         locale,
         fs: createNpmFileSystem(
           (uri) => {
-            if (uri.scheme === 'file') {
-              if (uri.path === '/node_modules') {
-                return ''
-              } else if (uri.path.startsWith('/node_modules/')) {
-                return uri.path.slice('/node_modules/'.length)
-              }
+            if (uri.scheme !== 'file') return
+            const path = asFileName(uri)
+            if (path === '/node_modules') {
+              return ''
+            } else if (path.startsWith('/node_modules/')) {
+              return path.slice('/node_modules/'.length)
             }
           },
           (pkgName) => {
@@ -157,6 +168,7 @@ self.onmessage = async (msg: MessageEvent<WorkerMessage>) => {
             return plugin
           }
         }),
+        uriPrefix,
       )
 
       return createTypeScriptWorkerLanguageService({

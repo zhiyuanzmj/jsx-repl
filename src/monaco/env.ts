@@ -29,7 +29,8 @@ export function toMonacoUri(store: Store, filename: string) {
 }
 
 export function fromMonacoPath(store: Store, path: string) {
-  return path.slice(getStoreUriPrefix(store).length)
+  // store.files are keyed without the leading slash, e.g. `src/App.tsx`
+  return path.slice(getStoreUriPrefix(store).length).replace(/^\//, '')
 }
 
 export function initMonaco(store: Store) {
@@ -48,9 +49,12 @@ export function initMonaco(store: Store) {
     // dispose of any models that are not in the store
     for (const model of editor.getModels()) {
       const uri = model.uri.toString()
-      if (store.files[fromMonacoPath(store, model.uri.path)]) continue
+      const fileName = fromMonacoPath(store, model.uri.path)
+      if (store.files[fileName]) continue
 
+      // type definitions fetched from the cdn, scoped by the instance prefix
       if (uri.startsWith('file:///node_modules')) continue
+      if (fileName.startsWith('node_modules')) continue
       if (uri.startsWith('inmemory://')) continue
 
       model.dispose()
@@ -201,12 +205,16 @@ export function loadMonacoEnv(store: Store) {
   // Support for go to definition
   editor.registerEditorOpener({
     openCodeEditor(_, resource) {
-      if (resource.toString().startsWith('file:///node_modules')) {
+      const prefix = getStoreUriPrefix(store)
+      if (
+        resource.toString().startsWith('file:///node_modules') ||
+        resource.path.startsWith(prefix + 'node_modules/')
+      ) {
         return true
       }
 
       const path = resource.path
-      if (path.startsWith(getStoreUriPrefix(store))) {
+      if (path.startsWith(prefix)) {
         const fileName = fromMonacoPath(store, path)
         if (fileName !== store.activeFile.filename) {
           store.setActive(fileName)
