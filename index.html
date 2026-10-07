@@ -16,6 +16,20 @@
       }
     </style>
 
+    <!--
+      Temporary workaround: @emnapi 2.0.0-alpha.6 (released 2026-10-05) breaks
+      napi-rs wasm modules ("Check exception status failed" panic), crashing the
+      oxc-based vue-jsx compiler loaded from esm.sh. This override pins its
+      dependencies back to the last working versions. Remove once upstream fixes
+      the regression (then also drop the deps pin if no longer needed).
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "https://esm.sh/@vue-jsx/compiler-wasm32-wasi?target=es2022": "https://esm.sh/@vue-jsx/compiler-wasm32-wasi@3.3.0-rc.3?deps=@emnapi/core@2.0.0-alpha.4,@emnapi/runtime@2.0.0-alpha.4"
+        }
+      }
+    </script>
     <script type="module" src="./test/main.tsx"></script>
 
     <script>
