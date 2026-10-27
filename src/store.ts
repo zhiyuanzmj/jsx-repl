@@ -126,7 +126,9 @@ export function useStore({
           encodeURIComponent(transformTS(addEsmPrefix(code, importMap.value)))
       ).then((i) => i.default || { plugins: [] })
     } catch (e) {
-      errors.value = [`Syntax error in ${packageFile}: ${(e as Error).message}`]
+      errors.value = [
+        `Syntax error in ${viteConfigFile}: ${(e as Error).message}`,
+      ]
       console.error(e)
       viteConfig.value = { plugins: [] }
     }
